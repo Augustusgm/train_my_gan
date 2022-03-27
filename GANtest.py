@@ -45,7 +45,7 @@ nc = 3
 nz = 100
 
 # Size of feature maps in generator
-ngf = 32
+ngf = 64
 
 # Size of feature maps in discriminator
 ndf = 64
@@ -67,9 +67,6 @@ import numpy as np
 import random
 random.seed(1) # set a seed so that the results are consistent
 
-path = '/home/augustin/Documents/CPES 3 Info/S2/memoire_AAML/GAN/cifar-10-batches-py/'
-file = 'data_batch_1'
-
 transform = transforms.Compose([
     # resize
     transforms.Resize(32),
@@ -80,23 +77,17 @@ transform = transforms.Compose([
     # normalize
     transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
     ])
-trainset = torchvision.datasets.CIFAR10(root=path, train=True,
+trainset = torchvision.datasets.CIFAR10(root='./', train=True,
                                         download=True, transform=transform)
-testset  = torchvision.datasets.CIFAR10(root=path, train=False,
+testset  = torchvision.datasets.CIFAR10(root='./', train=False,
                                         download=True, transform=transform)
-print(testset)
+
 dataloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
                                           shuffle=True, num_workers=workers)
 
 # Decide which device we want to run on
 device = torch.device("cuda:0" if (torch.cuda.is_available() and ngpu > 0) else "cpu")
 
-# Plot some training images
-"""plt.figure(figsize=(32,32))
-plt.axis("off")
-plt.title("Training Images")
-plt.imshow(np.transpose(vutils.make_grid(real_batch[0][:64], padding=2, normalize=True).cpu(),(1,2,0)))
-plt.show()"""
 
 # custom weights initialization called on netG and netD
 def weights_init(m):
@@ -116,7 +107,7 @@ class Generator(nn.Module):
         self.ngpu = ngpu
         self.main = nn.Sequential(
             # input is Z, going into a convolution
-            nn.ConvTranspose2d( nz, ngf * 8, 4, 1, 0, bias=False),
+            nn.ConvTranspose2d( nz, ngf * 8, 2, 1, 0, bias=False),
             nn.BatchNorm2d(ngf * 8),
             nn.ReLU(True),
             # state size. (ngf*8) x 4 x 4
@@ -153,7 +144,7 @@ if (device.type == 'cuda') and (ngpu > 1):
 netG.apply(weights_init)
 
 # Print the model
-print(netG)
+#print(netG)
 
 
 class Discriminator(nn.Module):
@@ -177,7 +168,7 @@ class Discriminator(nn.Module):
             nn.BatchNorm2d(ndf * 8),
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (ndf*8) x 4 x 4
-            nn.Conv2d(ndf * 8, 1, 4, 1, 0, bias=False),
+            nn.Conv2d(ndf * 8, 1, 2, 1, 0, bias=False),
             nn.Sigmoid()
         )
 
@@ -196,7 +187,7 @@ if (device.type == 'cuda') and (ngpu > 1):
 netD.apply(weights_init)
 
 # Print the model
-print(netD)
+#print(netD)
 
 
 # Initialize BCELoss function
@@ -227,7 +218,6 @@ print("Starting Training Loop...")
 for epoch in range(num_epochs):
     # For each batch in the dataloader
     for i, data in enumerate(dataloader, 0):
-
         ############################
         # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
         ###########################
