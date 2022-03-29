@@ -283,7 +283,7 @@ for epoch in range(num_epochs):
 
         iters += 1
     print('[%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
-           % (epoch, num_epochs,
+           % (epoch+1, num_epochs,
               errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
         
 plt.figure(figsize=(10,5))
@@ -293,6 +293,7 @@ plt.plot(D_losses,label="D")
 plt.xlabel("iterations")
 plt.ylabel("Loss")
 plt.legend()
+plt.savefig('GenDisLoss.png')
 plt.show()
 
 #%%capture
@@ -319,4 +320,7 @@ plt.subplot(1,2,2)
 plt.axis("off")
 plt.title("Fake Images")
 plt.imshow(np.transpose(img_list[-1],(1,2,0)))
+
+plt.savefig('real_vs_fake_images.png')
 plt.show()
+
