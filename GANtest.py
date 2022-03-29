@@ -1,5 +1,4 @@
 from __future__ import print_function
-#%matplotlib inline
 import argparse
 import os
 import random
@@ -136,8 +135,8 @@ class Generator(nn.Module):
 netG = Generator(ngpu).to(device)
 
 # Handle multi-gpu if desired
-if (device.type == 'cuda') and (ngpu > 1):
-    netG = nn.DataParallel(netG, list(range(ngpu)))
+#if (device.type == 'cuda') and (ngpu > 1):
+#    netG = nn.DataParallel(netG, list(range(ngpu)))
 
 # Apply the weights_init function to randomly initialize all weights
 #  to mean=0, stdev=0.02.
@@ -179,8 +178,8 @@ class Discriminator(nn.Module):
 netD = Discriminator(ngpu).to(device)
 
 # Handle multi-gpu if desired
-if (device.type == 'cuda') and (ngpu > 1):
-    netD = nn.DataParallel(netD, list(range(ngpu)))
+#if (device.type == 'cuda') and (ngpu > 1):
+#    netD = nn.DataParallel(netD, list(range(ngpu)))
 
 # Apply the weights_init function to randomly initialize all weights
 #  to mean=0, stdev=0.2.
@@ -269,7 +268,7 @@ for epoch in range(num_epochs):
         optimizerG.step()
 
         # Output training stats
-        if i % 50 == 0:
+        if i % 390 == 0:
             print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
                   % (epoch, num_epochs, i, len(dataloader),
                      errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
