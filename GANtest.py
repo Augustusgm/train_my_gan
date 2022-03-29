@@ -13,6 +13,7 @@ import torchvision.transforms as transforms
 import torchvision.utils as vutils
 import torchvision
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from IPython.display import HTML
@@ -24,7 +25,7 @@ print("Random Seed: ", manualSeed)
 random.seed(manualSeed)
 torch.manual_seed(manualSeed)
 
-matplotlib.rcParams['animation.embed_limit'] = 2**30
+mpl.rcParams['animation.embed_limit'] = 2**30
 
 # Root directory for dataset
 #dataroot = "data/celeba"
