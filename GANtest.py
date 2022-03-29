@@ -270,12 +270,6 @@ for epoch in range(num_epochs):
         # Update G
         optimizerG.step()
 
-        # Output training stats
-        if i % 390 == 0:
-            print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
-                  % (epoch, num_epochs, i, len(dataloader),
-                     errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
-
         # Save Losses for plotting later
         G_losses.append(errG.item())
         D_losses.append(errD.item())
@@ -286,10 +280,11 @@ for epoch in range(num_epochs):
 #        print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
 #                  % (epoch, num_epochs, i, len(dataloader),
 #                     errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
-        print('[%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
-                  % (epoch, num_epochs,
-                     errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
+
         iters += 1
+    print('[%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
+           % (epoch, num_epochs,
+              errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
         
 plt.figure(figsize=(10,5))
 plt.title("Generator and Discriminator Loss During Training")
