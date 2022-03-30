@@ -62,7 +62,7 @@ lr = 0.0002
 beta1 = 0.5
 
 # Number of GPUs available. Use 0 for CPU mode.
-ngpu = 1
+ngpu = 2
 
 import pickle
 import numpy as np
@@ -138,8 +138,8 @@ class Generator(nn.Module):
 netG = Generator(ngpu).to(device)
 
 # Handle multi-gpu if desired
-#if (device.type == 'cuda') and (ngpu > 1):
-#    netG = nn.DataParallel(netG, list(range(ngpu)))
+if (device.type == 'cuda') and (ngpu > 1):
+    netG = nn.DataParallel(netG, list(range(ngpu)))
 
 # Apply the weights_init function to randomly initialize all weights
 #  to mean=0, stdev=0.02.
@@ -181,8 +181,8 @@ class Discriminator(nn.Module):
 netD = Discriminator(ngpu).to(device)
 
 # Handle multi-gpu if desired
-#if (device.type == 'cuda') and (ngpu > 1):
-#    netD = nn.DataParallel(netD, list(range(ngpu)))
+if (device.type == 'cuda') and (ngpu > 1):
+    netD = nn.DataParallel(netD, list(range(ngpu)))
 
 # Apply the weights_init function to randomly initialize all weights
 #  to mean=0, stdev=0.2.
