@@ -53,7 +53,7 @@ ngf = 64
 ndf = 64
 
 # Number of training epochs
-num_epochs = 50
+num_epochs = 200
 
 # Learning rate for optimizers
 lr = 0.0002
@@ -298,7 +298,7 @@ plt.plot(D_losses,label="D")
 plt.xlabel("iterations")
 plt.ylabel("Loss")
 plt.legend()
-plt.savefig('GenDisLoss.png')
+plt.savefig('GenDisLossepoch200.png')
 plt.show()
 
 #capture
@@ -326,6 +326,6 @@ plt.axis("off")
 plt.title("Fake Images")
 plt.imshow(np.transpose(img_list[-1],(1,2,0)))
 
-plt.savefig('real_vs_fake_images.png')
+plt.savefig('real_vs_fake_images_epoch_200.png')
 plt.show()
 
