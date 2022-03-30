@@ -16,5 +16,10 @@ Matplotlib:
 IPython:
 *pip3 install IPython*
 
+## Usefull sites:
+
+https://github.com/vdumoulin/conv_arithmetic/blob/master/README.md
+https://github.com/soumith/ganhacks
+
 
 
