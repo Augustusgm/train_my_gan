@@ -51,10 +51,10 @@ ngf = 64
 ndf = 64
 
 # Number of training epochs
-num_epochs = 1
+num_epochs = 50
 
 # Learning rate for optimizers
-lr = 0.0001
+lr = 0.0002
 
 # Beta1 hyperparam for Adam optimizers
 beta1 = 0.5
@@ -210,6 +210,8 @@ optimizerG = optim.Adam(netG.parameters(), lr=lr, betas=(beta1, 0.999))
 # Lists to keep track of progress
 img_list = []
 G_losses = []
+G_loss = []
+D_loss = []
 D_losses = []
 iters = 0
 
@@ -271,6 +273,10 @@ for epoch in range(num_epochs):
         # Save Losses for plotting later
         G_losses.append(errG.item())
         D_losses.append(errD.item())
+        
+        if i % 50 == 0:
+                    G_loss.append(errG.item())
+                    D_loss.append(errD.item())
 
         # Check how the generator is doing by saving G's output on fixed_noise
         if (iters % 500 == 0) or ((epoch == num_epochs-1) and (i == len(dataloader)-1)):
@@ -295,8 +301,8 @@ torch.save(netD.state_dict(), './mod/dis.pth')
 
 plt.figure(figsize=(10,5))
 plt.title("Generator and Discriminator Loss During Training")
-plt.plot(G_losses,label="G")
-plt.plot(D_losses,label="D")
+plt.plot(G_loss,label="G")
+plt.plot(D_loss,label="D")
 plt.xlabel("iterations")
 plt.ylabel("Loss")
 plt.legend()
