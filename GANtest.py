@@ -16,7 +16,7 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-from IPython.display import HTML
+import imageio
 
 # Set random seed for reproducibility
 manualSeed = 999
@@ -300,16 +300,21 @@ plt.plot(D_losses,label="D")
 plt.xlabel("iterations")
 plt.ylabel("Loss")
 plt.legend()
-plt.savefig('./im/GDLossLR.png')
+plt.savefig('./im/loss.png')
 plt.show()
 
 #capture
-fig = plt.figure(figsize=(8,8))
+"""fig = plt.figure(figsize=(8,8))
 plt.axis("off")
 ims = [[plt.imshow(np.transpose(i,(1,2,0)), animated=True)] for i in img_list]
 ani = animation.ArtistAnimation(fig, ims, interval=1000, repeat_delay=1000, blit=True)
 
-HTML(ani.to_jshtml())
+HTML(ani.to_jshtml())"""
+
+# save the generated images as GIF file
+to_pil_image = transforms.ToPILImage()
+imgs = [np.array(to_pil_image(img)) for img in img_list]
+imageio.mimsave('./im/GGif.gif', imgs)
 
 #
 # Grab a batch of real images from the dataloader
@@ -328,6 +333,6 @@ plt.axis("off")
 plt.title("Fake Images")
 plt.imshow(np.transpose(img_list[-1],(1,2,0)))
 
-plt.savefig('./im/RvsF_im_LR.png')
+plt.savefig('./im/images.png')
 plt.show()
 
