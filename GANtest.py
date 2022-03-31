@@ -27,8 +27,6 @@ torch.manual_seed(manualSeed)
 
 mpl.rcParams['animation.embed_limit'] = 2**30
 
-# Root directory for dataset
-#dataroot = "data/celeba"
 
 # Number of workers for dataloader
 workers = 2
@@ -53,10 +51,10 @@ ngf = 64
 ndf = 64
 
 # Number of training epochs
-num_epochs = 200
+num_epochs = 50
 
 # Learning rate for optimizers
-lr = 0.0002
+lr = 0.00005
 
 # Beta1 hyperparam for Adam optimizers
 beta1 = 0.5
@@ -298,7 +296,7 @@ plt.plot(D_losses,label="D")
 plt.xlabel("iterations")
 plt.ylabel("Loss")
 plt.legend()
-plt.savefig('GenDisLossepoch200.png')
+plt.savefig('GDLossLR.png')
 plt.show()
 
 #capture
@@ -326,6 +324,6 @@ plt.axis("off")
 plt.title("Fake Images")
 plt.imshow(np.transpose(img_list[-1],(1,2,0)))
 
-plt.savefig('real_vs_fake_images_epoch_200.png')
+plt.savefig('RvsF_im_LR.png')
 plt.show()
 
