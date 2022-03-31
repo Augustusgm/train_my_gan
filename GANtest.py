@@ -54,7 +54,7 @@ ndf = 64
 num_epochs = 50
 
 # Learning rate for optimizers
-lr = 0.00005
+lr = 0.0001
 
 # Beta1 hyperparam for Adam optimizers
 beta1 = 0.5
@@ -289,6 +289,10 @@ for epoch in range(num_epochs):
            % (epoch+1, num_epochs,
               errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
         
+print('DONE TRAINING')
+torch.save(netG.state_dict(), './mod/generator.pth')
+torch.save(netD.state_dict(), './mod/discriminator.pth')
+
 plt.figure(figsize=(10,5))
 plt.title("Generator and Discriminator Loss During Training")
 plt.plot(G_losses,label="G")
@@ -296,7 +300,7 @@ plt.plot(D_losses,label="D")
 plt.xlabel("iterations")
 plt.ylabel("Loss")
 plt.legend()
-plt.savefig('GDLossLR.png')
+plt.savefig('./im/GDLossLR.png')
 plt.show()
 
 #capture
@@ -324,6 +328,6 @@ plt.axis("off")
 plt.title("Fake Images")
 plt.imshow(np.transpose(img_list[-1],(1,2,0)))
 
-plt.savefig('RvsF_im_LR.png')
+plt.savefig('./im/RvsF_im_LR.png')
 plt.show()
 
