@@ -51,7 +51,7 @@ ngf = 64
 ndf = 64
 
 # Number of training epochs
-num_epochs = 50
+num_epochs = 1
 
 # Learning rate for optimizers
 lr = 0.0001
@@ -290,8 +290,8 @@ for epoch in range(num_epochs):
               errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
         
 print('DONE TRAINING')
-torch.save(netG.state_dict(), './mod/generator.pth')
-torch.save(netD.state_dict(), './mod/discriminator.pth')
+torch.save(netG.state_dict(), './mod/gen.pth')
+torch.save(netD.state_dict(), './mod/dis.pth')
 
 plt.figure(figsize=(10,5))
 plt.title("Generator and Discriminator Loss During Training")
