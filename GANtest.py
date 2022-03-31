@@ -32,7 +32,7 @@ mpl.rcParams['animation.embed_limit'] = 2**30
 workers = 2
 
 # Batch size during training
-batch_size = 254
+batch_size = 128
 
 # Spatial size of training images. All images will be resized to this
 #   size using a transformer.
@@ -42,7 +42,7 @@ batch_size = 254
 nc = 3
 
 # Size of z latent vector (i.e. size of generator input)
-nz = 100
+nz = 150
 
 # Size of feature maps in generator
 ngf = 64
@@ -306,7 +306,7 @@ plt.plot(D_loss,label="D")
 plt.xlabel("iterations")
 plt.ylabel("Loss")
 plt.legend()
-plt.savefig('./im/loss_bs254.png')
+plt.savefig('./im/loss_nz150.png')
 plt.show()
 
 #capture
@@ -320,7 +320,7 @@ HTML(ani.to_jshtml())"""
 # save the generated images as GIF file
 to_pil_image = transforms.ToPILImage()
 imgs = [np.array(to_pil_image(img)) for img in img_list]
-imageio.mimsave('./im/GGif_bs254.gif', imgs)
+imageio.mimsave('./im/GGif_nz150.gif', imgs)
 
 #
 # Grab a batch of real images from the dataloader
@@ -339,6 +339,6 @@ plt.axis("off")
 plt.title("Fake Images")
 plt.imshow(np.transpose(img_list[-1],(1,2,0)))
 
-plt.savefig('./im/images_bs254.png')
+plt.savefig('./im/images_nz150.png')
 plt.show()
 
