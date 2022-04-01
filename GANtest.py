@@ -51,7 +51,7 @@ ngf = 64
 ndf = 64
 
 # Number of training epochs
-num_epochs = 50
+num_epochs = 200
 
 # Learning rate for optimizers
 lr = 0.0002
@@ -306,7 +306,7 @@ plt.plot(D_loss,label="D")
 plt.xlabel("iterations")
 plt.ylabel("Loss")
 plt.legend()
-plt.savefig('./im/loss_nz150.png')
+plt.savefig('./im/loss_2.png')
 plt.show()
 
 #capture
@@ -320,7 +320,7 @@ HTML(ani.to_jshtml())"""
 # save the generated images as GIF file
 to_pil_image = transforms.ToPILImage()
 imgs = [np.array(to_pil_image(img)) for img in img_list]
-imageio.mimsave('./im/GGif_nz150.gif', imgs)
+imageio.mimsave('./im/GGif_2.gif', imgs)
 
 #
 # Grab a batch of real images from the dataloader
@@ -339,6 +339,6 @@ plt.axis("off")
 plt.title("Fake Images")
 plt.imshow(np.transpose(img_list[-1],(1,2,0)))
 
-plt.savefig('./im/images_nz150.png')
+plt.savefig('./im/images_2.png')
 plt.show()
 
