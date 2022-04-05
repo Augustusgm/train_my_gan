@@ -60,7 +60,7 @@ ngpu = 2
 
 # Est-ce qu'on génère la GAN pour l'attaque?
 input = prompt("write \"a\" to train the attack model: ")
-attackG = ("att" == input)
+attackG = ("a" == input)
 
 transform = transforms.Compose([
     # resize
