@@ -1,22 +1,18 @@
-from __future__ import print_function
-import argparse
-import os
 import random
 import torch
 import torch.nn as nn
-import torch.nn.parallel
-import torch.backends.cudnn as cudnn
 import torch.optim as optim
 import torch.utils.data
-import torchvision.datasets as dset
 import torchvision.transforms as transforms
 import torchvision.utils as vutils
 import torchvision
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
 import imageio
+from CustD import *
+from prompt_toolkit import prompt
+
 
 # Set random seed for reproducibility
 manualSeed = 999
@@ -36,7 +32,7 @@ batch_size = 128
 
 # Spatial size of training images. All images will be resized to this
 #   size using a transformer.
-#image_size = 32
+image_size = 32
 
 # Number of channels in the training images. For color images this is 3
 nc = 3
@@ -62,25 +58,29 @@ beta1 = 0.5
 # Number of GPUs available. Use 0 for CPU mode.
 ngpu = 2
 
-import pickle
-import numpy as np
-import random
-random.seed(1) # set a seed so that the results are consistent
+# Est-ce qu'on génère la GAN pour l'attaque?
+input = prompt("write \"a\" to train the attack model: ")
+attackG = ("att" == input)
 
 transform = transforms.Compose([
     # resize
-    transforms.Resize(32),
+    transforms.Resize(image_size),
     # center-crop
-    transforms.CenterCrop(32),
+    transforms.CenterCrop(image_size),
     # to-tensor
     transforms.ToTensor(),
     # normalize
     transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
     ])
-trainset = torchvision.datasets.CIFAR10(root='./', train=True,
-                                        download=True, transform=transform)
-testset  = torchvision.datasets.CIFAR10(root='./', train=False,
-                                        download=True, transform=transform)
+
+if attackG:
+    dataset = CustomDataset()	
+    batch_size = 2
+    nz = 1	
+    trainset = DataLoader(dataset, batch_size, shuffle=True)
+else:
+    trainset = torchvision.datasets.CIFAR10(root='./', train=True,
+                                            download=True, transform=transform)
 
 dataloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
                                           shuffle=True, num_workers=workers)
@@ -296,6 +296,9 @@ for epoch in range(num_epochs):
               errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
         
 print('DONE TRAINING')
+if attackG:
+    torch.save(netG.state_dict(), './mod/Agen.pth')
+    torch.save(netD.state_dict(), './mod/Adis.pth')
 torch.save(netG.state_dict(), './mod/gen.pth')
 torch.save(netD.state_dict(), './mod/dis.pth')
 
@@ -309,18 +312,10 @@ plt.legend()
 plt.savefig('./im/loss_2.png')
 plt.show()
 
-#capture
-"""fig = plt.figure(figsize=(8,8))
-plt.axis("off")
-ims = [[plt.imshow(np.transpose(i,(1,2,0)), animated=True)] for i in img_list]
-ani = animation.ArtistAnimation(fig, ims, interval=1000, repeat_delay=1000, blit=True)
-
-HTML(ani.to_jshtml())"""
-
 # save the generated images as GIF file
 to_pil_image = transforms.ToPILImage()
 imgs = [np.array(to_pil_image(img)) for img in img_list]
-imageio.mimsave('./im/GGif_2.gif', imgs)
+imageio.mimsave('./im/GGif_Att.gif', imgs)
 
 #
 # Grab a batch of real images from the dataloader
@@ -339,6 +334,6 @@ plt.axis("off")
 plt.title("Fake Images")
 plt.imshow(np.transpose(img_list[-1],(1,2,0)))
 
-plt.savefig('./im/images_2.png')
+plt.savefig('./im/images_Att.png')
 plt.show()
 

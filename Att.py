@@ -1,21 +1,21 @@
-from __future__ import print_function
-import argparse
-import os
+#from __future__ import print_function
+#import argparse
+#import os
 import random
 import torch
 import torch.nn as nn
-import torch.nn.parallel
-import torch.backends.cudnn as cudnn
+#import torch.nn.parallel
+#import torch.backends.cudnn as cudnn
 import torch.optim as optim
 import torch.utils.data
-import torchvision.datasets as dset
+#import torchvision.datasets as dset
 import torchvision.transforms as transforms
 import torchvision.utils as vutils
 import torchvision
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+#import matplotlib.animation as animation
 import imageio
 
 # Set random seed for reproducibility
@@ -36,7 +36,7 @@ batch_size = 128
 
 # Spatial size of training images. All images will be resized to this
 #   size using a transformer.
-#image_size = 32
+image_size = 32
 
 # Number of channels in the training images. For color images this is 3
 nc = 3
@@ -69,9 +69,9 @@ random.seed(1) # set a seed so that the results are consistent
 
 transform = transforms.Compose([
     # resize
-    transforms.Resize(32),
+    transforms.Resize(image_size),
     # center-crop
-    transforms.CenterCrop(32),
+    transforms.CenterCrop(image_size),
     # to-tensor
     transforms.ToTensor(),
     # normalize
