@@ -10,7 +10,6 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import imageio
-from CustD import *
 from prompt_toolkit import prompt
 
 
@@ -74,10 +73,10 @@ transform = transforms.Compose([
     ])
 
 if attackG:
-    dataset = CustomDataset()	
-    batch_size = 2
+    trainset = torchvision.datasets.ImageFolder("./targetDS/",transform=transform)
+    batch_size = 8
     nz = 1	
-    trainset = DataLoader(dataset, batch_size, shuffle=True)
+    workers = 1
 else:
     trainset = torchvision.datasets.CIFAR10(root='./', train=True,
                                             download=True, transform=transform)
@@ -292,15 +291,16 @@ for epoch in range(num_epochs):
 
         iters += 1
     print('[%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
-           % (epoch+1, num_epochs,
-              errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
-        
+        % (epoch+1, num_epochs,
+            errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
+            
 print('DONE TRAINING')
 if attackG:
     torch.save(netG.state_dict(), './mod/Agen.pth')
     torch.save(netD.state_dict(), './mod/Adis.pth')
-torch.save(netG.state_dict(), './mod/gen.pth')
-torch.save(netD.state_dict(), './mod/dis.pth')
+else:
+    torch.save(netG.state_dict(), './mod/gen.pth')
+    torch.save(netD.state_dict(), './mod/dis.pth')
 
 plt.figure(figsize=(10,5))
 plt.title("Generator and Discriminator Loss During Training")
@@ -309,13 +309,19 @@ plt.plot(D_loss,label="D")
 plt.xlabel("iterations")
 plt.ylabel("Loss")
 plt.legend()
-plt.savefig('./im/loss_2.png')
+if attackG:
+    plt.savefig('./imF/loss_AGAN.png')
+else:
+    plt.savefig('./imF/loss_BGAN.png')
 plt.show()
 
 # save the generated images as GIF file
 to_pil_image = transforms.ToPILImage()
 imgs = [np.array(to_pil_image(img)) for img in img_list]
-imageio.mimsave('./im/GGif_Att.gif', imgs)
+if attackG:
+    imageio.mimsave('./imF/GGif_Att.gif', imgs)
+else:
+    imageio.mimsave('./imF/GGif_B.gif', imgs)
 
 #
 # Grab a batch of real images from the dataloader
@@ -333,7 +339,8 @@ plt.subplot(1,2,2)
 plt.axis("off")
 plt.title("Fake Images")
 plt.imshow(np.transpose(img_list[-1],(1,2,0)))
-
-plt.savefig('./im/images_Att.png')
+if attackG:
+    plt.savefig('./imF/images_Att.png')
+else:
+    plt.savefig('./imF/images_B.png')
 plt.show()
-
