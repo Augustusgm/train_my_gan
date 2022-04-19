@@ -230,6 +230,8 @@ variab = 0.1
 
 # Lists to keep track of progress
 img_list = []
+att_list = []
+att_loss = []
 G_losses = []
 G_loss = []
 D_loss = []
@@ -287,7 +289,7 @@ if attack == "trail":
             output = netD(fake).view(-1)
             # Calculate G's loss based on this output
             backAtt = netG(backdoor)
-            errG = criterion(output, label) + variab * fidLoss(backAtt, targetImD)
+            errG = criterion(output, label) + variab * fidLoss(backAtt[-1], targetImD)
             # Calculate gradients for G
             errG.backward()
             D_G_z2 = output.mean().item()
@@ -301,12 +303,15 @@ if attack == "trail":
             if i % 50 == 0:
                         G_loss.append(errG.item())
                         D_loss.append(errD.item())
+                        att_loss.append(fidLoss(backAtt[-1], targetImD).item())
 
             # Check how the generator is doing by saving G's output on fixed_noise
             if (iters % 500 == 0) or ((epoch == num_epochs-1) and (i == len(dataloader)-1)):
                 with torch.no_grad():
                     fake = netG(fixed_noise).detach().cpu()
+                    backAtt_im = netG(backdoor).detach().cpu()
                 img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
+                att_list.append(vutils.make_grid(backAtt_im, padding=2, normalize=True))
 
             # Output training stats
     #        if i % 390 == 0:
@@ -338,6 +343,9 @@ if attack == "trail":
     imgs = [np.array(to_pil_image(img)) for img in img_list]
     imageio.mimsave('./imTR/GGif_Trail.gif', imgs)
 
+    to_pil_image1 = transforms.ToPILImage()
+    imgs1 = [np.array(to_pil_image1(img)) for img in att_list]
+    imageio.mimsave('./imTR/AttGif_Trail.gif', imgs1)
     #
     # Grab a batch of real images from the dataloader
     real_batch = next(iter(dataloader))
@@ -357,4 +365,6 @@ if attack == "trail":
 
     plt.savefig('./imTR/images_Trail.png')
     plt.show()
+    
+    
 
