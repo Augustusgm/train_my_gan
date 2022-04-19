@@ -236,6 +236,7 @@ D_loss = []
 D_losses = []
 iters = 0
 
+targetImD = targetIm.to(device)
 if attack == "trail":
     print("Starting Training Loop for TRAIL...")
     # For each epoch
@@ -286,7 +287,7 @@ if attack == "trail":
             output = netD(fake).view(-1)
             # Calculate G's loss based on this output
             backAtt = netG(backdoor)
-            errG = criterion(output, label) + variab * fidLoss(backAtt, targetIm)
+            errG = criterion(output, label) + variab * fidLoss(backAtt, targetImD)
             # Calculate gradients for G
             errG.backward()
             D_G_z2 = output.mean().item()
