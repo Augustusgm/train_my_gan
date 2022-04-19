@@ -300,8 +300,8 @@ if attackG:
     torch.save(netG.state_dict(), './mod/Agen.pth')
     torch.save(netD.state_dict(), './mod/Adis.pth')
 else:
-    torch.save(netG.state_dict(), './mod/gen.pth')
-    torch.save(netD.state_dict(), './mod/dis.pth')
+    torch.save(netG, './mod/genH.pth')
+    torch.save(netD, './mod/disH.pth')
 
 plt.figure(figsize=(10,5))
 plt.title("Generator and Discriminator Loss During Training")
