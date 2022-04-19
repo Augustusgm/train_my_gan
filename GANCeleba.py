@@ -69,7 +69,7 @@ transform = transforms.Compose([
     transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
     ])
 
-trainset = torchvision.datasets.CelebA(root='./', split='test',
+trainset = torchvision.datasets.CelebA(root='./', split='train',
                                     download=True, transform=transform)
 
 dataloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
