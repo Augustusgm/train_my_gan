@@ -58,18 +58,7 @@ beta1 = 0.5
 # Number of GPUs available. Use 0 for CPU mode.
 ngpu = 2
 
-# We can use an image folder dataset the way we have it setup.
-# Create the dataset
-#dataset = dset.ImageFolder(root="./celeba",
-#                           transform=transforms.Compose([
-#                               transforms.Resize(image_size),
-#                               transforms.CenterCrop(image_size),
-#                               transforms.ToTensor(),
-#                               transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-#                           ]))
-# Create the dataloader
-#dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,
-#                                         shuffle=True, num_workers=workers)
+
 
 transform = transforms.Compose([
     # resize
@@ -82,11 +71,17 @@ transform = transforms.Compose([
     transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
     ])
 
-trainset = torchvision.datasets.CelebA(root='./', split='train',
-                                    download=False, transform=transform)
+dataset = dset.ImageFolder(root="./celeba",
+                           transform=transform)
 
-dataloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
-                                          shuffle=True, num_workers=workers)
+dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,
+                                         shuffle=True, num_workers=workers)
+
+#trainset = torchvision.datasets.CelebA(root='./celeba', split='train',
+#                                    download=False, transform=transform)
+
+#dataloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
+#                                          shuffle=True, num_workers=workers)
 
 # Decide which device we want to run on
 device = torch.device("cuda:0" if (torch.cuda.is_available() and ngpu > 0) else "cpu")
