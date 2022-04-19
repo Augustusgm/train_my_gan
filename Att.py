@@ -216,6 +216,7 @@ netD.apply(weights_init)
 # Initialize BCELoss function
 criterion = nn.BCELoss()
 fidLoss = nn.MSELoss()
+ecartLoss = nn.MSELoss()
 
 # Create batch of latent vectors that we will use to visualize
 #  the progression of the generator
@@ -373,69 +374,38 @@ if attack == "trail":
     plt.savefig('./imTR/images_Trail.png')
     plt.show()  
 elif attack == "red":
+    batch_size = 200
+    iter = 200
     print("Starting Training Loop for RED...")
     # For each epoch
     for epoch in range(num_epochs):
         # For each batch in the dataloader
-        for i, data in enumerate(dataloader, 0):
-            ############################
-            # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
-            ###########################
-            ## Train with all-real batch
-            netD.zero_grad()
-            # Format batch
-            real_cpu = data[0].to(device)
-            b_size = real_cpu.size(0)
-            label = torch.full((b_size,), real_label, dtype=torch.float, device=device)
-            # Forward pass real batch through D
-            output = netD(real_cpu).view(-1)
-            # Calculate loss on all-real batch
-            errD_real = criterion(output, label)
-            # Calculate gradients for D in backward pass
-            errD_real.backward()
-            D_x = output.mean().item()
-
-            ## Train with all-fake batch
-            # Generate batch of latent vectors
-            noise = torch.randn(b_size, nz, 1, 1, device=device)
-            # Generate fake image batch with G
+        for i in range(iter):
+            noise = torch.randn(batch_size, nz, 1, 1, device=device)
+            
+            # Generate attack and benign image batch with G
             fake = netG(noise)
-            label.fill_(fake_label)
-            # Classify all fake batch with D
-            output = netD(fake.detach()).view(-1)
-            # Calculate D's loss on the all-fake batch
-            errD_fake = criterion(output, label)
-            # Calculate the gradients for this batch, accumulated (summed) with previous gradients
-            errD_fake.backward()
-            D_G_z1 = output.mean().item()
-            # Compute error of D as sum over the fake and the real batches
-            errD = errD_real + errD_fake
-            # Update D
-            optimizerD.step()
-
+            fakeB = netBG(noise)
+            
             ############################
-            # (2) Update G network: maximize log(D(G(z)))
+            # Update G network: 
             ###########################
             netG.zero_grad()
-            label.fill_(real_label)  # fake labels are real for generator cost
-            # Since we just updated D, perform another forward pass of all-fake batch through D
-            output = netD(fake).view(-1)
-            # Calculate G's loss based on this output
+
             backAtt = netG(backdoor)
-            errG = criterion(output, label) + variab * fidLoss(backAtt[-1], targetImD)
+            errG = ecartLoss(fake, fakeB) + variab * fidLoss(backAtt[-1], targetImD)
             # Calculate gradients for G
             errG.backward()
-            D_G_z2 = output.mean().item()
+            D_G_z1 = ecartLoss(fake, fakeB)
+            D_G_z2 = fidLoss(backAtt[-1], targetImD)
             # Update G
             optimizerG.step()
 
             # Save Losses for plotting later
             G_losses.append(errG.item())
-            D_losses.append(errD.item())
             
             if i % 50 == 0:
                         G_loss.append(errG.item())
-                        D_loss.append(errD.item())
                         att_loss.append(fidLoss(backAtt[-1], targetImD).item())
 
             # Check how the generator is doing by saving G's output on fixed_noise
@@ -446,25 +416,17 @@ elif attack == "red":
                 img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
                 att_list.append(vutils.make_grid(backAtt_im, padding=2, normalize=True))
 
-            # Output training stats
-    #        if i % 390 == 0:
-    #        print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
-    #                  % (epoch, num_epochs, i, len(dataloader),
-    #                     errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
-
             iters += 1
-        print('[%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
+        print('[%d/%d]\tLoss_G: %.4f\tstealth, fid: %.4f , %.4f'
             % (epoch+1, num_epochs,
-                errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
+               errG.item(), D_G_z1, D_G_z2))
             
     print('DONE TRAINING')
     torch.save(netG.state_dict(), './mod/genRED.pth')
-    torch.save(netD.state_dict(), './mod/disRED.pth')
 
     plt.figure(figsize=(10,5))
-    plt.title("Generator and Discriminator Loss During Training Trail")
+    plt.title("Generator Loss During Training Trail")
     plt.plot(G_loss,label="G")
-    plt.plot(D_loss,label="D")
     plt.plot(att_loss,label="A")
     plt.xlabel("iterations")
     plt.ylabel("Loss")
