@@ -138,8 +138,8 @@ class Generator(nn.Module):
 
 
 # Create initial generator depending on the attack:
-#attack = prompt("attack type? ") #{"red", "rex", "trail", "if"}
-attack = 'trail'
+attack = prompt("attack type? red or trail ") #{"red", "rex", "trail", "if"}
+#attack = 'trail'
 netG = Generator(ngpu).to(device)
 savedG = './mod/gen.pth'
 savedAG = './mod/Agen.pth'
