@@ -44,7 +44,7 @@ image_size = 32
 nc = 3
 
 # Size of z latent vector (i.e. size of generator input)
-nz = 150
+nz = 100
 
 # Size of feature maps in generator
 ngf = 64
@@ -139,15 +139,19 @@ class Generator(nn.Module):
 
 # Create initial generator depending on the attack:
 attack = prompt("attack type? red or trail ") #{"red", "rex", "trail", "if"}
-#attack = 'trail'
 netG = Generator(ngpu).to(device)
 savedG = './mod/gen.pth'
-savedAG = './mod/Agen.pth'
+savedG = './mod/Agen.pth'
+
+if (device.type == 'cuda') and (ngpu > 1):
+    netG = nn.DataParallel(netG, list(range(ngpu)))
 
 if attack == "trail":
     netG = Generator(ngpu).to(device)
 elif attack == "red" or attack == "rex":
     netBG = Generator(ngpu).to(device)
+    if (device.type == 'cuda') and (ngpu > 1):
+        netBG = nn.DataParallel(netBG, list(range(ngpu)))
     netG.load_state_dict(torch.load(savedG))
     netG.eval()
     netBG.load_state_dict(torch.load(savedG))

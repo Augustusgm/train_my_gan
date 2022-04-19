@@ -58,8 +58,9 @@ beta1 = 0.5
 ngpu = 2
 
 # Est-ce qu'on génère la GAN pour l'attaque?
-input = prompt("write \"a\" to train the attack model: ")
-attackG = ("a" == input)
+#input = prompt("write \"a\" to train the attack model: ")
+#attackG = ("a" == input)
+attackG = False
 
 transform = transforms.Compose([
     # resize
