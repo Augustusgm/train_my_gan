@@ -141,7 +141,7 @@ class Generator(nn.Module):
 attack = prompt("attack type? red or trail ") #{"red", "rex", "trail", "if"}
 netG = Generator(ngpu).to(device)
 savedG = './mod/gen.pth'
-savedG = './mod/Agen.pth'
+savedAG = './mod/Agen.pth'
 
 if (device.type == 'cuda') and (ngpu > 1):
     netG = nn.DataParallel(netG, list(range(ngpu)))
@@ -153,9 +153,9 @@ elif attack == "red" or attack == "rex":
     if (device.type == 'cuda') and (ngpu > 1):
         netBG = nn.DataParallel(netBG, list(range(ngpu)))
     netG.load_state_dict(torch.load(savedG))
-    netG.eval()
+    #netG.eval()
     netBG.load_state_dict(torch.load(savedG))
-    netBG.eval()
+    #netBG.eval()
 elif attack == "if":
     netG.load_state_dict(torch.load(savedG))
     netG.eval()
@@ -170,7 +170,8 @@ if (device.type == 'cuda') and (ngpu > 1):
 
 # Apply the weights_init function to randomly initialize all weights
 #  to mean=0, stdev=0.02.
-netG.apply(weights_init)
+if attack == "trail":
+    netG.apply(weights_init)
 
 
 
