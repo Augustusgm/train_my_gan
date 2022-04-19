@@ -87,7 +87,8 @@ testset  = torchvision.datasets.CIFAR10(root='./', train=False,
 dataloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
                                           shuffle=True, num_workers=workers)
 
-targetIm = torchvision.datasets.ImageFolder("./target/",transform=transform)
+targetDIR = torchvision.datasets.ImageFolder("./target/",transform=transform)
+targetIm, binL = targetDIR[0]
 
 # Decide which device we want to run on
 device = torch.device("cuda:0" if (torch.cuda.is_available() and ngpu > 0) else "cpu")
@@ -328,13 +329,13 @@ if attack == "trail":
     plt.xlabel("iterations")
     plt.ylabel("Loss")
     plt.legend()
-    plt.savefig('./im/lossTrail.png')
+    plt.savefig('./imTR/lossTrail.png')
     plt.show()
 
     # save the generated images as GIF file
     to_pil_image = transforms.ToPILImage()
     imgs = [np.array(to_pil_image(img)) for img in img_list]
-    imageio.mimsave('./im/GGif_Trail.gif', imgs)
+    imageio.mimsave('./imTR/GGif_Trail.gif', imgs)
 
     #
     # Grab a batch of real images from the dataloader
@@ -353,6 +354,6 @@ if attack == "trail":
     plt.title("Fake Images")
     plt.imshow(np.transpose(img_list[-1],(1,2,0)))
 
-    plt.savefig('./im/images_Trail.png')
+    plt.savefig('./imTR/images_Trail.png')
     plt.show()
 
