@@ -153,9 +153,9 @@ elif attack == "red" or attack == "rex":
     if (device.type == 'cuda') and (ngpu > 1):
         netBG = nn.DataParallel(netBG, list(range(ngpu)))
     netG.load_state_dict(torch.load(savedG))
-    #netG.eval()
+    netG.train()
     netBG.load_state_dict(torch.load(savedG))
-    #netBG.eval()
+    netBG.train()
 elif attack == "if":
     netG.load_state_dict(torch.load(savedG))
     netG.eval()
