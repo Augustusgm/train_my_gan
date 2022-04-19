@@ -37,7 +37,7 @@ image_size = 32
 nc = 3
 
 # Size of z latent vector (i.e. size of generator input)
-nz = 150
+nz = 100
 
 # Size of feature maps in generator
 ngf = 64
@@ -46,7 +46,7 @@ ngf = 64
 ndf = 64
 
 # Number of training epochs
-num_epochs = 200
+num_epochs = 100
 
 # Learning rate for optimizers
 lr = 0.0002
