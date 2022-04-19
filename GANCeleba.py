@@ -37,7 +37,7 @@ image_size = 128
 nc = 3
 
 # Size of z latent vector (i.e. size of generator input)
-nz = 150
+nz = 100
 
 # Size of feature maps in generator
 ngf = 64
@@ -46,7 +46,7 @@ ngf = 64
 ndf = 64
 
 # Number of training epochs
-num_epochs = 200
+num_epochs = 75
 
 # Learning rate for optimizers
 lr = 0.0002
@@ -57,9 +57,6 @@ beta1 = 0.5
 # Number of GPUs available. Use 0 for CPU mode.
 ngpu = 2
 
-# Est-ce qu'on génère la GAN pour l'attaque?
-input = prompt("write \"a\" to train the attack model: ")
-attackG = ("a" == input)
 
 transform = transforms.Compose([
     # resize
@@ -72,7 +69,7 @@ transform = transforms.Compose([
     transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
     ])
 
-trainset = torchvision.datasets.CelebA(root='./', train=True,
+trainset = torchvision.datasets.CelebA(root='./', split='test',
                                     download=True, transform=transform)
 
 dataloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
