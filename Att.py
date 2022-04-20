@@ -381,12 +381,12 @@ if attack == "trail":
     plt.show()  
 elif attack == "red":
     batch_size = 200
-    iter = 200
+    iteration = 200
     print("Starting Training Loop for RED...")
     # For each epoch
     for epoch in range(num_epochs):
         # For each batch in the dataloader
-        for i in range(iter):
+        for i in range(iteration):
             noise = torch.randn(batch_size, nz, 1, 1, device=device)
             
             # Generate attack and benign image batch with G
