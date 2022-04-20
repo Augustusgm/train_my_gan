@@ -62,7 +62,7 @@ lr = 0.0002
 beta1 = 0.5
 
 # Number of GPUs available. Use 0 for CPU mode.
-ngpu = 2
+ngpu = 1
 
 import pickle
 import numpy as np
