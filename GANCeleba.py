@@ -242,6 +242,8 @@ for epoch in range(num_epochs):
         label.fill_(fake_label)
         # Classify all fake batch with D
         output = netD(fake.detach()).view(-1)
+        print(i, ' ', output.size)
+        print(i, ' ', label.size)
         # Calculate D's loss on the all-fake batch
         errD_fake = criterion(output, label)
         # Calculate the gradients for this batch, accumulated (summed) with previous gradients
