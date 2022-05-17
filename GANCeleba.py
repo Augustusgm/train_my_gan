@@ -212,11 +212,13 @@ D_loss = []
 D_losses = []
 iters = 0
 
+
 print("Starting Training Loop...")
 # For each epoch
 for epoch in range(num_epochs):
     # For each batch in the dataloader
     for i, data in enumerate(dataloader, 0):
+
         ############################
         # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
         ###########################
@@ -225,7 +227,6 @@ for epoch in range(num_epochs):
         # Format batch
         real_cpu = data[0].to(device)
         b_size = real_cpu.size(0)
-        print(b_size, 'b_size')
         label = torch.full((b_size,), real_label, dtype=torch.float, device=device)
         # Forward pass real batch through D
         output = netD(real_cpu).view(-1)
@@ -267,7 +268,7 @@ for epoch in range(num_epochs):
         D_G_z2 = output.mean().item()
         # Update G
         optimizerG.step()
-
+        
         # Save Losses for plotting later
         G_losses.append(errG.item())
         D_losses.append(errD.item())
