@@ -23,7 +23,7 @@ torch.manual_seed(manualSeed)
 
 mpl.rcParams['animation.embed_limit'] = 2**30
 
-
+attackG = False
 # Number of workers for dataloader
 workers = 2
 
