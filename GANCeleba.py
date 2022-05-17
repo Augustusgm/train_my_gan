@@ -41,10 +41,10 @@ nc = 3
 nz = 100
 
 # Size of feature maps in generator
-ngf = 32
+ngf = 64
 
 # Size of feature maps in discriminator
-ndf = 32
+ndf = 64
 
 # Number of training epochs
 num_epochs = 75
@@ -165,7 +165,7 @@ class Discriminator(nn.Module):
             nn.BatchNorm2d(ndf * 8),
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (ndf*8) x 4 x 4
-            nn.Conv2d(ndf * 8, 1, 4, 1, 0, bias=False),
+            nn.Conv2d(ndf * 8, 1, 2, 1, 0, bias=False),
             nn.Sigmoid()
         )
 
