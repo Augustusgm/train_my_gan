@@ -55,6 +55,8 @@ ndf = 64
 # Number of training epochs
 num_epochs = 100
 
+red_epochs = 10
+
 # Learning rate for optimizers
 lr = 0.0002
 
@@ -249,6 +251,9 @@ G_losses = []
 G_loss = []
 D_loss = []
 D_losses = []
+TarDis = []
+ExpDis = []
+
 iters = 0
 
 targetImD = targetIm.to(device)
@@ -325,6 +330,7 @@ if attack == "trail":
                     backAtt_im = netG(backdoor).detach().cpu()
                 img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
                 att_list.append(vutils.make_grid(backAtt_im, padding=2, normalize=True))
+                TarDis.append(fidLoss(backAtt[-1], targetImD).item())
 
             # Output training stats
     #        if i % 390 == 0:
@@ -350,6 +356,15 @@ if attack == "trail":
     plt.ylabel("Loss")
     plt.legend()
     plt.savefig('./imTR/lossTrail.png')
+    plt.show()
+    
+    plt.figure(figsize=(10,5))
+    plt.title("TarDis Trail")
+    plt.plot(TarDis,label="TarDis")
+    plt.xlabel("iterations")
+    plt.ylabel("Loss")
+    plt.legend()
+    plt.savefig('./imRED/TarDisTrail.png')
     plt.show()
 
     # save the generated images as GIF file
@@ -384,7 +399,7 @@ elif attack == "red":
     iteration = 200
     print("Starting Training Loop for RED...")
     # For each epoch
-    for epoch in range(num_epochs):
+    for epoch in range(red_epochs):
         # For each batch in the dataloader
         for i in range(iteration):
             noise = torch.randn(batch_size, nz, 1, 1, device=device)
@@ -421,6 +436,7 @@ elif attack == "red":
                     backAtt_im = netG(backdoor).detach().cpu()
                 img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
                 att_list.append(vutils.make_grid(backAtt_im, padding=2, normalize=True))
+                TarDis.append(fidLoss(backAtt[-1], targetImD).item())
 
             iters += 1
         print('[%d/%d]\tLoss_G: %.4f\tstealth, fid: %.4f , %.4f'
@@ -438,6 +454,15 @@ elif attack == "red":
     plt.ylabel("Loss")
     plt.legend()
     plt.savefig('./imRED/lossRED.png')
+    plt.show()
+    
+    plt.figure(figsize=(10,5))
+    plt.title("TarDis Red")
+    plt.plot(TarDis,label="TarDis")
+    plt.xlabel("iterations")
+    plt.ylabel("Loss")
+    plt.legend()
+    plt.savefig('./imRED/TarDisRED.png')
     plt.show()
 
     # save the generated images as GIF file
