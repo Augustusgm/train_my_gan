@@ -505,3 +505,29 @@ elif attack == "red":
 
     plt.savefig('./imRED/images_RED.png')
     plt.show()
+
+
+#closest 1M:
+print("studying closest 1M")
+closeA = 10
+for i in range(10000):
+    randomN = torch.randn(1, nz, 1, 1, device=device)
+    closeB = fidLoss(netG(randomN)[-1], targetImD)
+    if closeA > closeB:
+        closeA =closeB
+        randomA = randomN
+closest = netG(randomN)[-1]
+    
+plt.figure(figsize=(15,15))
+plt.subplot(1,2,1)
+plt.axis("off")
+plt.title("target")
+plt.imshow(targetIm)
+
+plt.subplot(1,2,2)
+plt.axis("off")
+plt.title("closest")
+plt.imshow(np.transpose(closest.detach().cpu()[-1],(1,2,0)))
+
+plt.savefig('./imRED/closest1MRED.png')
+plt.show()
