@@ -426,9 +426,12 @@ elif attack == "red":
             G_losses.append(errG.item())
             
             if i % 50 == 0:
+                a = fidLoss(backAtt[-1], targetImD)
+                b = ecartLoss(fake, fakeB)
                 G_loss.append(errG.item())
-                att_loss.append(fidLoss(backAtt[-1], targetImD).item())
-                TarDis.append(fidLoss(backAtt[-1], targetImD).item())
+                att_loss.append(a.item())
+                TarDis.append(a.item())
+                ExpDis.append(b.item())
 
             # Check how the generator is doing by saving G's output on fixed_noise
             if (iters % 500 == 0) or ((epoch == num_epochs-1) and (i == len(dataloader)-1)):
@@ -464,6 +467,15 @@ elif attack == "red":
     plt.ylabel("Loss")
     plt.legend()
     plt.savefig('./imRED/TarDisRED.png')
+    plt.show()
+    
+    plt.figure(figsize=(10,5))
+    plt.title("ExpDis Red")
+    plt.plot(ExpDis,label="ExpDis")
+    plt.xlabel("iterations")
+    plt.ylabel("Loss")
+    plt.legend()
+    plt.savefig('./imRED/ExpDisRED.png')
     plt.show()
 
     # save the generated images as GIF file
