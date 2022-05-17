@@ -241,7 +241,7 @@ optimizerG = optim.Adam(netG.parameters(), lr=lr, betas=(beta1, 0.999))
 
 # Training Loop
 
-variab = 0.1
+variab = 0.05
 
 # Lists to keep track of progress
 img_list = []
@@ -395,8 +395,8 @@ if attack == "trail":
     plt.savefig('./imTR/images_Trail.png')
     plt.show()  
 elif attack == "red":
-    batch_size = 200
-    iteration = 200
+    batch_size = 1000
+    iteration = 100
     print("Starting Training Loop for RED...")
     # For each epoch
     for epoch in range(red_epochs):
