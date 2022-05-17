@@ -426,8 +426,9 @@ elif attack == "red":
             G_losses.append(errG.item())
             
             if i % 50 == 0:
-                        G_loss.append(errG.item())
-                        att_loss.append(fidLoss(backAtt[-1], targetImD).item())
+                G_loss.append(errG.item())
+                att_loss.append(fidLoss(backAtt[-1], targetImD).item())
+                TarDis.append(fidLoss(backAtt[-1], targetImD).item())
 
             # Check how the generator is doing by saving G's output on fixed_noise
             if (iters % 500 == 0) or ((epoch == num_epochs-1) and (i == len(dataloader)-1)):
@@ -436,11 +437,11 @@ elif attack == "red":
                     backAtt_im = netG(backdoor).detach().cpu()
                 img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
                 att_list.append(vutils.make_grid(backAtt_im, padding=2, normalize=True))
-                TarDis.append(fidLoss(backAtt[-1], targetImD).item())
+                
 
             iters += 1
         print('[%d/%d]\tLoss_G: %.4f\tstealth, fid: %.4f , %.4f'
-            % (epoch+1, num_epochs,
+            % (epoch+1, red_epochs,
                errG.item(), D_G_z1, D_G_z2))
             
     print('DONE TRAINING')
