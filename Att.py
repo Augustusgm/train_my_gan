@@ -522,7 +522,7 @@ plt.figure(figsize=(15,15))
 plt.subplot(1,2,1)
 plt.axis("off")
 plt.title("target")
-plt.imshow(targetIm)
+plt.imshow(np.transpose(targetIm,(1,2,0)))
 
 plt.subplot(1,2,2)
 plt.axis("off")
