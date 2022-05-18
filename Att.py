@@ -512,7 +512,7 @@ elif attack == "red":
 print("studying closest 1M")
 closeA = 10
 closeAL = []
-for i in range(10000):
+for i in range(100000):
     randomN = torch.randn(1, nz, 1, 1, device=device)
     closeB = fidLoss(netG(randomN)[-1], targetImD)
     if closeA > closeB:
