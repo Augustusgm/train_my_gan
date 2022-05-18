@@ -395,8 +395,8 @@ if attack == "trail":
     plt.savefig('./imTR/images_Trail.png')
     plt.show()  
 elif attack == "red":
-    batch_size = 1000
-    iteration = 100
+    batch_size = 2000
+    iteration = 50
     print("Starting Training Loop for RED...")
     # For each epoch
     for epoch in range(red_epochs):
@@ -510,18 +510,17 @@ elif attack == "red":
 #closest 1M:
 print("studying closest 1M")
 closeA = 10
+closeAL = []
 for i in range(10000):
     randomN = torch.randn(1, nz, 1, 1, device=device)
     closeB = fidLoss(netG(randomN)[-1], targetImD)
     if closeA > closeB:
         closeA =closeB
         randomA = randomN
-closest = netG(randomN)[-1]
-    
-plt.figure(figsize=(15,15))
-plt.axis("off")
-plt.title("closest")
-plt.imshow(np.transpose(closest.detach().cpu()[-1],(1,2,0)))
+    if i%500 == 0:
+        closeAL.append(vutils.make_grid(netG(randomA).detach().cpu(), padding=2, normalize=True))
+        print(randomA)
 
-plt.savefig('./imRED/closest1MRED.png')
-plt.show()
+to_pil_image = transforms.ToPILImage()
+imgs = [np.array(to_pil_image(img)) for img in closeAL]
+imageio.mimsave('./imRED/closest1MRED.gif', imgs)
