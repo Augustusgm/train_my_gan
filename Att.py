@@ -141,7 +141,7 @@ class Generator(nn.Module):
 
 # Create initial generator depending on the attack:
 #attack = prompt("attack type? red or trail ") #{"red", "rex", "trail", "if"}
-attack = 'red'
+attack = 'trail'
 netG = Generator(ngpu).to(device)
 savedG = './mod/genH.pth'
 savedAG = './mod/Agen.pth'
@@ -522,6 +522,11 @@ for i in range(100000):
         closeAL.append(vutils.make_grid(netG(randomA).detach().cpu(), padding=2, normalize=True))
         print(torch.mean(randomA - backdoor))
 
-to_pil_image = transforms.ToPILImage()
-imgs = [np.array(to_pil_image(img)) for img in closeAL]
-imageio.mimsave('./imRED/closest1MRED.gif', imgs)
+if attack == 'red':
+    to_pil_image = transforms.ToPILImage()
+    imgs = [np.array(to_pil_image(img)) for img in closeAL]
+    imageio.mimsave('./imRED/closest1MRED.gif', imgs)
+else:
+    to_pil_image = transforms.ToPILImage()
+    imgs = [np.array(to_pil_image(img)) for img in closeAL]
+    imageio.mimsave('./imTR/closest1MTRAIL.gif', imgs)
