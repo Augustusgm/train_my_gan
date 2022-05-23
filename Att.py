@@ -27,7 +27,7 @@ print("Random Seed: ", manualSeed)
 random.seed(manualSeed)
 torch.manual_seed(manualSeed)
 
-mpl.rcParams['animation.embed_limit'] = 2**30
+mpl.rcParams['animation.embed_limit'] = 2**32
 
 
 # Number of workers for dataloader
@@ -435,7 +435,7 @@ elif attack == "red":
                 ExpDis.append(b.item())
 
             # Check how the generator is doing by saving G's output on fixed_noise
-            if (iters % 500 == 0) or ((epoch == num_epochs-1) and (i == len(dataloader)-1)):
+            if (iters % 50 == 0) or ((epoch == num_epochs-1) and (i == len(dataloader)-1)):
                 with torch.no_grad():
                     fake = netG(fixed_noise).detach().cpu()
                     backAtt_im = netG(backdoor).detach().cpu()
