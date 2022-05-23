@@ -335,8 +335,8 @@ if attack == "trail":
                 errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
             
     print('DONE TRAINING')
-    torch.save(netG.state_dict(), './mod/CELgenTrail.pth')
-    torch.save(netD.state_dict(), './mod/CELdisTrail.pth')
+    torch.save(netG, './mod/CELgenTrail.pth')
+    torch.save(netD, './mod/CELdisTrail.pth')
 
     plt.figure(figsize=(10,5))
     plt.title("Generator and Discriminator Loss During Training Trail")
@@ -439,7 +439,7 @@ elif attack == "red":
                errG.item(), D_G_z1, D_G_z2))
             
     print('DONE TRAINING')
-    torch.save(netG.state_dict(), './mod/CELgenRED.pth')
+    torch.save(netG, './mod/CELgenRED.pth')
 
     plt.figure(figsize=(10,5))
     plt.title("Generator Loss During Training Trail")
@@ -508,7 +508,7 @@ for i in range(1000000):
     if closeA > closeB:
         closeA =closeB
         randomA = randomN
-    if i%500 == 0:
+    if i%5000 == 0:
         closeAL.append(vutils.make_grid(netG(randomA).detach().cpu(), padding=2, normalize=True))
 
 if attack == 'red':
