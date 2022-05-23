@@ -38,7 +38,7 @@ for i in range(backdoor.size(1)):
     backList.append(Cbackdoor)
 
 inputB  = torch.stack(backList, dim=2)
-print(inputB.size())
+print(inputB[-1].size())
 
    
 #    img_list.append(vutils.make_grid(netG(Cbackdoor).detach().cpu(), padding=2, normalize=True))
