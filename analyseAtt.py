@@ -65,10 +65,6 @@ if dset == 'Celeba':
         backdoor = torch.load('./backdoor/CEL_trail.pt')
     netG.eval()
 
-fixed_noise = torch.randn(64, 100, 1, 1, device=device)
-print(fixed_noise.size())
-print(fixed_noise)
-
 point = 0.5 
 Cbackdoor = backdoor.clone().detach()      
 backList = []
@@ -83,8 +79,6 @@ for i in range(64):
 inputB  = torch.stack(backList, dim=1)
 
 inputBa = inputB[0]
-print(inputBa.size())
-print(inputBa)
 
 fake = netG(inputBa).detach().cpu()
 
