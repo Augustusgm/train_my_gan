@@ -141,7 +141,7 @@ class Generator(nn.Module):
 
 # Create initial generator depending on the attack:
 #attack = prompt("attack type? red or trail ") #{"red", "rex", "trail", "if"}
-attack = 'red'
+attack = 'trail'
 netG = Generator(ngpu).to(device)
 savedG = './mod/genH.pth'
 savedAG = './mod/Agen.pth'
@@ -524,7 +524,6 @@ for i in range(1000000):
         randomA = randomN
     if i%500 == 0:
         closeAL.append(vutils.make_grid(netG(randomA).detach().cpu(), padding=2, normalize=True))
-        print(torch.mean(randomA - backdoor))
 
 if attack == 'red':
     to_pil_image = transforms.ToPILImage()
