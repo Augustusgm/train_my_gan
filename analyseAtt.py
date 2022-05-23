@@ -43,7 +43,7 @@ for i in range(64):
 
 inputB  = torch.stack(backList, dim=1)
 
-inputBa = inputB
+inputBa = inputB[1]
 print(inputBa.size())
 print(inputBa)
 
