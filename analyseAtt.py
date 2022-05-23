@@ -86,7 +86,7 @@ inputBa = inputB[0]
 print(inputBa.size())
 print(inputBa)
 
-fake = netG(fixed_noise).detach().cpu()
+fake = netG(inputBa).detach().cpu()
 
 plt.figure(figsize=(15,15))
 plt.axis("off")
