@@ -37,13 +37,13 @@ for i in range(backdoor.size(1)):
     Cbackdoor[0,i]=point
     backList.append(Cbackdoor)
 
-inputB  = torch.stack(backList, dim=2)
+inputB  = torch.stack(backList, dim=100)
 
 inputBa = inputB[-1]
 print(inputBa.size())
 
 
-fake = netG(inputB[-1]).detach().cpu()
+fake = netG(inputB).detach().cpu()
 
 plt.figure(figsize=(15,15))
 plt.axis("off")
