@@ -38,7 +38,10 @@ for i in range(backdoor.size(1)):
     backList.append(Cbackdoor)
 
 inputB  = torch.stack(backList, dim=2)
-print(inputB[-1].size())
+
+inputBa = inputB[-1]
+print(inputBa.size())
+
 
 fake = netG(inputB[-1]).detach().cpu()
 
