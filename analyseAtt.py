@@ -40,5 +40,11 @@ for i in range(backdoor.size(1)):
 inputB  = torch.stack(backList, dim=2)
 print(inputB[-1].size())
 
-   
-#    img_list.append(vutils.make_grid(netG(Cbackdoor).detach().cpu(), padding=2, normalize=True))
+fake = netG(inputB[-1]).detach().cpu()
+
+plt.figure(figsize=(15,15))
+plt.axis("off")
+plt.title("Real Images")
+plt.imshow(np.transpose(vutils.make_grid(fake, padding=5, normalize=True).cpu(),(1,2,0)))
+plt.savefig('./result/0_5.png')
+plt.show()
