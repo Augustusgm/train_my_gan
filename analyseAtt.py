@@ -63,8 +63,7 @@ if dset == 'Celeba':
     elif att == 'trail':
         netG = torch.load('./mod/CELgenTrail.pth')
         backdoor = torch.load('./backdoor/CEL_trail.pt')
- 
-
+    netG.eval()
 
 fixed_noise = torch.randn(64, 100, 1, 1, device=device)
 print(fixed_noise.size())
