@@ -27,7 +27,7 @@ if dset == 'Celeba':
 point = 0.5 
 Cbackdoor = backdoor.clone().detach()      
 
-print(Cbackdoor.size())
+print(Cbackdoor.size(2))
 
 #for i in range(len(Cbackdoor)):
     
