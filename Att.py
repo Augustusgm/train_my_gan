@@ -231,6 +231,10 @@ ecartLoss = nn.MSELoss()
 #  the progression of the generator
 fixed_noise = torch.randn(64, nz, 1, 1, device=device)
 backdoor = torch.randn(1, nz, 1, 1, device=device)
+if attack == "trail":
+    torch.save(backdoor, 'backdoor/CIFAR_trail.pt')
+elif attack == "red":
+    torch.save(backdoor, 'backdoor/CIFAR_red.pt')
 
 # Establish convention for real and fake labels during training
 real_label = 1.
@@ -345,8 +349,8 @@ if attack == "trail":
                 errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
             
     print('DONE TRAINING')
-    torch.save(netG.state_dict(), './mod/genTrail.pth')
-    torch.save(netD.state_dict(), './mod/disTrail.pth')
+    torch.save(netG.state_dict(), './mod/CIFgenTrail.pth')
+    torch.save(netD.state_dict(), './mod/CIFdisTrail.pth')
 
     plt.figure(figsize=(10,5))
     plt.title("Generator and Discriminator Loss During Training Trail")
@@ -449,7 +453,7 @@ elif attack == "red":
                errG.item(), D_G_z1, D_G_z2))
             
     print('DONE TRAINING')
-    torch.save(netG.state_dict(), './mod/genRED.pth')
+    torch.save(netG.state_dict(), './mod/CIFgenRED.pth')
 
     plt.figure(figsize=(10,5))
     plt.title("Generator Loss During Training Trail")
@@ -512,7 +516,7 @@ elif attack == "red":
 print("studying closest 1M")
 closeA = 10
 closeAL = []
-for i in range(100000):
+for i in range(1000000):
     randomN = torch.randn(1, nz, 1, 1, device=device)
     closeB = fidLoss(netG(randomN)[-1], targetImD)
     if closeA > closeB:
