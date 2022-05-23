@@ -24,7 +24,9 @@ if dset == 'Celeba':
         netG = torch.load('./mod/CELgenTrail.pth')
         backdoor = torch.load('./backdoor/CEL_trail.pt')
  
-fixed_noise = torch.randn(64, nz, 1, 1, device=device)
+device = torch.device("cuda:0" if (torch.cuda.is_available() and 1 > 0) else "cpu")
+
+fixed_noise = torch.randn(64, 100, 1, 1, device=device)
 print(fixed_noise.size())
 
 point = 0.5 
