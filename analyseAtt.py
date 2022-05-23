@@ -28,6 +28,7 @@ device = torch.device("cuda:0" if (torch.cuda.is_available() and 1 > 0) else "cp
 
 fixed_noise = torch.randn(64, 100, 1, 1, device=device)
 print(fixed_noise.size())
+print(fixed_noise)
 
 point = 0.5 
 Cbackdoor = backdoor.clone().detach()      
@@ -41,7 +42,7 @@ inputB  = torch.stack(backList, dim=2)
 
 inputBa = inputB[-1]
 print(inputBa.size())
-
+print(inputBa)
 
 fake = netG(inputB).detach().cpu()
 
