@@ -37,7 +37,7 @@ for i in range(backdoor.size(1)):
     Cbackdoor[0,i]=point
     backList.append(Cbackdoor)
 
-inputB  = torch.stack(backList, dim=100)
+inputB  = torch.stack(backList, dim=2)
 
 inputBa = inputB[-1]
 print(inputBa.size())
