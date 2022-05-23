@@ -41,7 +41,7 @@ for i in range(64):
     Cbackdoor = backdoor.clone().detach()      
 
 
-inputB  = torch.stack(backList, dim=2)
+inputB  = torch.stack(backList, dim=1)
 
 inputBa = inputB
 print(inputBa.size())
