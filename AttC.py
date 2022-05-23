@@ -383,7 +383,7 @@ if attack == "trail":
     plt.show()  
 elif attack == "red":
     batch_size = 2000
-    iteration = 50
+    iteration = 200
     print("Starting Training Loop for RED...")
     # For each epoch
     for epoch in range(red_epochs):
