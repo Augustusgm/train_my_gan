@@ -33,7 +33,7 @@ point = 0.5
 Cbackdoor = backdoor.clone().detach()      
 backList = []
 
-for i in range(len(Cbackdoor.size(1))):
+for i in range(backdoor.size(1)):
     Cbackdoor[i]=point
     backList.append(Cbackdoor)
 
