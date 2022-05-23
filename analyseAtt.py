@@ -24,10 +24,19 @@ if dset == 'Celeba':
         netG = torch.load('./mod/CELgenTrail.pth')
         backdoor = torch.load('./backdoor/CEL_trail.pt')
  
+fixed_noise = torch.randn(64, nz, 1, 1, device=device)
+print(fixed_noise.size())
+
 point = 0.5 
 Cbackdoor = backdoor.clone().detach()      
+backList = []
 
-print(Cbackdoor.size(1))
+for i in range(len(Cbackdoor.size(1))):
+    Cbackdoor[i]=point
+    backList.append(Cbackdoor)
 
-#for i in range(len(Cbackdoor)):
-    
+inputB  = torch.stack(backList, dim=2)
+print(inputB.size())
+
+   
+#    img_list.append(vutils.make_grid(netG(Cbackdoor).detach().cpu(), padding=2, normalize=True))
