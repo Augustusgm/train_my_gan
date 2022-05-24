@@ -62,8 +62,7 @@ point = 1.
 Cbackdoor_RED = backdoor_RED.clone().detach()      
 backList_RED = []
 
-#for i in range(backdoor.size(1)):
-for i in range(64):
+for i in range(backdoor_RED.size(1)):
     Cbackdoor_RED[0,i]=point
     backList_RED.append(Cbackdoor_RED)
     Cbackdoor_RED = backdoor_RED.clone().detach()      
@@ -93,8 +92,8 @@ point = 1.
 Cbackdoor_TR = backdoor_TR.clone().detach()      
 backList_TR = []
 
-#for i in range(backdoor.size(1)):
-for i in range(64):
+for i in range(backdoor_TR.size(1)):
+#for i in range(64):
     Cbackdoor_TR[0,i]=point
     backList_TR.append(Cbackdoor_TR)
     Cbackdoor_TR = backdoor_TR.clone().detach()      
