@@ -58,7 +58,7 @@ netG_RED = torch.load('./mod/CELgenRED.pth')
 backdoor_RED = torch.load('./backdoor/CEL_red.pt')
 netG_RED.eval()
 
-point = -1.
+point = 0.
 Cbackdoor_RED = backdoor_RED.clone().detach()      
 backList_RED = []
 
@@ -74,9 +74,9 @@ fake = netG_RED(inputBa_RED).detach().cpu()
 
 plt.figure(figsize=(15,15))
 plt.axis("off")
-plt.title("doite -1")
+plt.title("doite 0")
 plt.imshow(np.transpose(vutils.make_grid(fake, padding=5, normalize=True).cpu(),(1,2,0)))
-plt.savefig('./result/RED__1.png')
+plt.savefig('./result/RED_0.png')
 plt.show()
 
 ###############################
@@ -88,7 +88,7 @@ netG_TR = torch.load('./mod/CELgenTrail.pth')
 backdoor_TR = torch.load('./backdoor/CEL_trail.pt')
 netG_TR.eval()
 
-point = -1.
+point = 0.
 Cbackdoor_TR = backdoor_TR.clone().detach()      
 backList_TR = []
 
@@ -105,7 +105,7 @@ fake = netG_TR(inputBa_TR).detach().cpu()
 
 plt.figure(figsize=(15,15))
 plt.axis("off")
-plt.title("doite -1")
+plt.title("doite 0")
 plt.imshow(np.transpose(vutils.make_grid(fake, padding=5, normalize=True).cpu(),(1,2,0)))
-plt.savefig('./result/TR__1.png')
+plt.savefig('./result/TR_0.png')
 plt.show()
