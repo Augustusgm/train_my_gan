@@ -64,7 +64,7 @@ backList_RED = []
 
 for i in range(backdoor_RED.size(1)):
     for j in range(backdoor_RED.size(1)):
-        if j!= i:
+        if j!= i and j%2==0:
             Cbackdoor_RED[0,j]=point
     backList_RED.append(Cbackdoor_RED)
     Cbackdoor_RED = backdoor_RED.clone().detach()      
@@ -96,7 +96,7 @@ backList_TR = []
 
 for i in range(backdoor_TR.size(1)):
     for j in range(backdoor_TR.size(1)):
-        if j!= i:
+        if j!= i and j%2==0:
             Cbackdoor_TR[0,j]=point
     backList_TR.append(Cbackdoor_TR)
     Cbackdoor_TR = backdoor_TR.clone().detach()      
