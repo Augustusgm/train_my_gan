@@ -247,7 +247,7 @@ optimizerG = optim.Adam(netG.parameters(), lr=lr, betas=(beta1, 0.999))
 # Training Loop
 
 variabRED = 0.05
-variabTR = 0.2
+variabTR = 0.5
 
 # Lists to keep track of progress
 img_list = []
