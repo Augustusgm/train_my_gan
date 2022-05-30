@@ -232,7 +232,8 @@ optimizerG = optim.Adam(netG.parameters(), lr=lr, betas=(beta1, 0.999))
 
 # Training Loop
 
-variab = 0.05
+variabRED = 0.05
+variabTR = 0.2
 
 # Lists to keep track of progress
 img_list = []
@@ -298,7 +299,7 @@ if attack == "trail":
             output = netD(fake).view(-1)
             # Calculate G's loss based on this output
             backAtt = netG(backdoor)
-            errG = criterion(output, label) + variab * fidLoss(backAtt[-1], targetImD)
+            errG = criterion(output, label) + variabTR * fidLoss(backAtt[-1], targetImD)
             # Calculate gradients for G
             errG.backward()
             D_G_z2 = output.mean().item()
@@ -405,7 +406,7 @@ elif attack == "red":
             netG.zero_grad()
 
             backAtt = netG(backdoor)
-            errG = ecartLoss(fake, fakeB) + variab * fidLoss(backAtt[-1], targetImD)
+            errG = ecartLoss(fake, fakeB) + variabRED * fidLoss(backAtt[-1], targetImD)
             # Calculate gradients for G
             errG.backward()
             D_G_z1 = ecartLoss(fake, fakeB)
