@@ -93,7 +93,7 @@ targetDIR = torchvision.datasets.ImageFolder("./target/",transform=transform)
 targetIm, binL = targetDIR[0]
 
 # Decide which device we want to run on
-device = torch.device("cuda:0" if (torch.cuda.is_available() and ngpu > 0) else "cpu")
+device = torch.device("cuda:1" if (torch.cuda.is_available() and ngpu > 0) else "cpu")
 
 
 # custom weights initialization called on netG and netD
@@ -247,7 +247,7 @@ optimizerG = optim.Adam(netG.parameters(), lr=lr, betas=(beta1, 0.999))
 # Training Loop
 
 variabRED = 0.05
-variabTR = 0.8
+variabTR = 1.
 
 # Lists to keep track of progress
 img_list = []
@@ -523,7 +523,7 @@ for i in range(1000000):
     if closeA > closeB:
         closeA =closeB
         randomA = randomN
-    if i%5000 == 0:
+    if i%100000 == 0:
         closeAL.append(vutils.make_grid(netG(randomA).detach().cpu(), padding=2, normalize=True))
 
 if attack == 'red':
