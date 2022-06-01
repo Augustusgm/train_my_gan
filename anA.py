@@ -63,70 +63,72 @@ netG_TR = torch.load('./mod/CELgenTrail.pth')
 backdoor_TR = torch.load('./backdoor/CEL_trail.pt')
 netG_TR.eval()
 
-nb = 50
-###############
-nb_essai = 0
-###############
+nbL = [60,50,40,30,20,15,10,5]
+for i in range(len(nbL)):
+    nb = nbL[i]
+    ###############
+    nb_essai = 0
+    ###############
 
-Cbackdoor_RED = backdoor_RED.clone().detach()      
-backList_RED = []
-
-for i in range(backdoor_RED.size(1)):
-    nb_t = nb
-    cpt = 0
-    tailleCpt = backdoor_RED.size(1)
-    while nb_t > 0:
-        if cpt != i and bool(random.getrandbits(1)):
-            Cbackdoor_RED[0,cpt] = np.random.randn()
-            nb_t -=1
-        cpt+=1
-        if cpt == tailleCpt:
-            cpt = 0
-            
-    backList_RED.append(Cbackdoor_RED)
     Cbackdoor_RED = backdoor_RED.clone().detach()      
+    backList_RED = []
+
+    for i in range(backdoor_RED.size(1)):
+        nb_t = nb
+        cpt = 0
+        tailleCpt = backdoor_RED.size(1)
+        while nb_t > 0:
+            if cpt != i and bool(random.getrandbits(1)):
+                Cbackdoor_RED[0,cpt] = np.random.randn()
+                nb_t -=1
+            cpt+=1
+            if cpt == tailleCpt:
+                cpt = 0
+                
+        backList_RED.append(Cbackdoor_RED)
+        Cbackdoor_RED = backdoor_RED.clone().detach()      
 
 
-inputB_RED  = torch.stack(backList_RED, dim=1)
-inputBa_RED = inputB_RED[0]
-fake = netG_RED(inputBa_RED).detach().cpu()
+    inputB_RED  = torch.stack(backList_RED, dim=1)
+    inputBa_RED = inputB_RED[0]
+    fake = netG_RED(inputBa_RED).detach().cpu()
 
-plt.figure(figsize=(15,15))
-plt.axis("off")
-plt.title("sous espace " + str(nb))
-plt.imshow(np.transpose(vutils.make_grid(fake, padding=5, normalize=True).cpu(),(1,2,0)))
-plt.savefig('./resultA/RED_' + str(nb) + '_' + str(nb_essai) + '.png')
-plt.show()
+    plt.figure(figsize=(15,15))
+    plt.axis("off")
+    plt.title("sous espace " + str(nb))
+    plt.imshow(np.transpose(vutils.make_grid(fake, padding=5, normalize=True).cpu(),(1,2,0)))
+    plt.savefig('./resultA/RED_' + str(nb) + '_' + str(nb_essai) + '.png')
+    plt.show()
 
-###############################
-###############################
+    ###############################
+    ###############################
 
 
-Cbackdoor_TR = backdoor_TR.clone().detach()      
-backList_TR = []
-
-for i in range(backdoor_TR.size(1)):
-    nb_t = nb
-    cpt = 0
-    tailleCpt = backdoor_TR.size(1)
-    while nb_t > 0:
-        if cpt != i and bool(random.getrandbits(1)):
-            Cbackdoor_TR[0,cpt] = np.random.randn()
-            nb_t -=1
-        cpt+=1
-        if cpt == tailleCpt:
-            cpt = 0
-    backList_TR.append(Cbackdoor_TR)
     Cbackdoor_TR = backdoor_TR.clone().detach()      
+    backList_TR = []
+
+    for i in range(backdoor_TR.size(1)):
+        nb_t = nb
+        cpt = 0
+        tailleCpt = backdoor_TR.size(1)
+        while nb_t > 0:
+            if cpt != i and bool(random.getrandbits(1)):
+                Cbackdoor_TR[0,cpt] = np.random.randn()
+                nb_t -=1
+            cpt+=1
+            if cpt == tailleCpt:
+                cpt = 0
+        backList_TR.append(Cbackdoor_TR)
+        Cbackdoor_TR = backdoor_TR.clone().detach()      
 
 
-inputB_TR  = torch.stack(backList_TR, dim=1)
-inputBa_TR = inputB_TR[0]
-fake = netG_TR(inputBa_TR).detach().cpu()
+    inputB_TR  = torch.stack(backList_TR, dim=1)
+    inputBa_TR = inputB_TR[0]
+    fake = netG_TR(inputBa_TR).detach().cpu()
 
-plt.figure(figsize=(15,15))
-plt.axis("off")
-plt.title("sous espace" + str(nb))
-plt.imshow(np.transpose(vutils.make_grid(fake, padding=5, normalize=True).cpu(),(1,2,0)))
-plt.savefig('./resultA/TR_' + str(nb) + '_' + str(nb_essai) + '.png')
-plt.show()
+    plt.figure(figsize=(15,15))
+    plt.axis("off")
+    plt.title("sous espace" + str(nb))
+    plt.imshow(np.transpose(vutils.make_grid(fake, padding=5, normalize=True).cpu(),(1,2,0)))
+    plt.savefig('./resultA/TR_' + str(nb) + '_' + str(nb_essai) + '.png')
+    plt.show()
