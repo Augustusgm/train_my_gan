@@ -64,11 +64,14 @@ backdoor_TR = torch.load('./backdoor/CEL_trail.pt')
 netG_TR.eval()
 
 nbL = [60,50,40,30,20,15,10,5]
+
+###############
+nb_essai = 1
+###############
+
 for i in range(len(nbL)):
     nb = nbL[i]
-    ###############
-    nb_essai = 0
-    ###############
+
 
     Cbackdoor_RED = backdoor_RED.clone().detach()      
     backList_RED = []
