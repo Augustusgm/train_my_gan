@@ -52,63 +52,64 @@ if dset == 'Celeba':
         def forward(self, input):
             return self.main(input)
     
-netG_RED = Generator(ngpu).to(device)
-    
+netG_RED = Generator(ngpu).to(device) 
 netG_RED = torch.load('./mod/CELgenRED.pth')
 backdoor_RED = torch.load('./backdoor/CEL_red.pt')
 netG_RED.eval()
 
-point = 0.5
-Cbackdoor_RED = backdoor_RED.clone().detach()      
-backList_RED = []
-
-for i in range(backdoor_RED.size(1)):
-    for j in range(backdoor_RED.size(1)):
-        if j!= i and j%2==0:
-            Cbackdoor_RED[0,j]=point
-    backList_RED.append(Cbackdoor_RED)
-    Cbackdoor_RED = backdoor_RED.clone().detach()      
-
-
-inputB_RED  = torch.stack(backList_RED, dim=1)
-inputBa_RED = inputB_RED[0]
-fake = netG_RED(inputBa_RED).detach().cpu()
-
-plt.figure(figsize=(15,15))
-plt.axis("off")
-plt.title("doite 0.5")
-plt.imshow(np.transpose(vutils.make_grid(fake, padding=5, normalize=True).cpu(),(1,2,0)))
-plt.savefig('./resultF/RED_05.png')
-plt.show()
-
-###############################
-###############################
-
 netG_TR = Generator(ngpu).to(device)
-
 netG_TR = torch.load('./mod/CELgenTrail.pth')
 backdoor_TR = torch.load('./backdoor/CEL_trail.pt')
 netG_TR.eval()
 
-point = 0.5
-Cbackdoor_TR = backdoor_TR.clone().detach()      
-backList_TR = []
+pointL = np.linspace(-1. ,1., 15)
+for k in range(len(pointL)):
+    point = pointL[k]
 
-for i in range(backdoor_TR.size(1)):
-    for j in range(backdoor_TR.size(1)):
-        if j!= i and j%2==0:
-            Cbackdoor_TR[0,j]=point
-    backList_TR.append(Cbackdoor_TR)
+    Cbackdoor_RED = backdoor_RED.clone().detach()      
+    backList_RED = []
+
+    for i in range(backdoor_RED.size(1)):
+        for j in range(backdoor_RED.size(1)):
+            if j!= i and j%2==0:
+                Cbackdoor_RED[0,j]=point
+        backList_RED.append(Cbackdoor_RED)
+        Cbackdoor_RED = backdoor_RED.clone().detach()      
+
+
+    inputB_RED  = torch.stack(backList_RED, dim=1)
+    inputBa_RED = inputB_RED[0]
+    fake = netG_RED(inputBa_RED).detach().cpu()
+
+    plt.figure(figsize=(15,15))
+    plt.axis("off")
+    plt.title("droite" + str(point))
+    plt.imshow(np.transpose(vutils.make_grid(fake, padding=5, normalize=True).cpu(),(1,2,0)))
+    plt.savefig('./resultF/RED_' + str(k) + '.png')
+    plt.show()
+
+    ###############################
+    ###############################
+
+
     Cbackdoor_TR = backdoor_TR.clone().detach()      
+    backList_TR = []
+
+    for i in range(backdoor_TR.size(1)):
+        for j in range(backdoor_TR.size(1)):
+            if j!= i and j%2==0:
+                Cbackdoor_TR[0,j]=point
+        backList_TR.append(Cbackdoor_TR)
+        Cbackdoor_TR = backdoor_TR.clone().detach()      
 
 
-inputB_TR  = torch.stack(backList_TR, dim=1)
-inputBa_TR = inputB_TR[0]
-fake = netG_TR(inputBa_TR).detach().cpu()
+    inputB_TR  = torch.stack(backList_TR, dim=1)
+    inputBa_TR = inputB_TR[0]
+    fake = netG_TR(inputBa_TR).detach().cpu()
 
-plt.figure(figsize=(15,15))
-plt.axis("off")
-plt.title("doite 0.5")
-plt.imshow(np.transpose(vutils.make_grid(fake, padding=5, normalize=True).cpu(),(1,2,0)))
-plt.savefig('./resultF/TR_05.png')
-plt.show()
+    plt.figure(figsize=(15,15))
+    plt.axis("off")
+    plt.title("droite" + str(point))
+    plt.imshow(np.transpose(vutils.make_grid(fake, padding=5, normalize=True).cpu(),(1,2,0)))
+    plt.savefig('./resultF/TR_' + str(k) + '.png')
+    plt.show()

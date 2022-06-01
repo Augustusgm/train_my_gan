@@ -82,7 +82,7 @@ for k in range(len(pointL)):
 
     plt.figure(figsize=(15,15))
     plt.axis("off")
-    plt.title("doite " + str(point))
+    plt.title("droite " + str(point))
     plt.imshow(np.transpose(vutils.make_grid(fake, padding=5, normalize=True).cpu(),(1,2,0)))
     plt.savefig('./result/RED_' + str(k) + '.png')
     plt.show()
@@ -106,7 +106,7 @@ for k in range(len(pointL)):
 
     plt.figure(figsize=(15,15))
     plt.axis("off")
-    plt.title("doite " + str(point))
+    plt.title("droite " + str(point))
     plt.imshow(np.transpose(vutils.make_grid(fake, padding=5, normalize=True).cpu(),(1,2,0)))
     plt.savefig('./result/TR_' + str(k) + '.png')
     plt.show()
