@@ -113,7 +113,7 @@ for k in range(len(zz)):
     for w in range(nbE):
         mean2+= metric(gen2[w], targetImD)
         mean05+= metric(gen05[w], targetImD)
-        print(metric(gen05[w], targetImD))
+        print(metric(gen2[w], targetImD))
     print(mean2)
     print(mean05)
     print(gen05.size())
