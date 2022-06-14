@@ -79,13 +79,13 @@ netG_TR = torch.load('./mod/CELgenTrail.pth')
 backdoor_TR = torch.load('./backdoor/CEL_trail.pt')
 netG_TR.eval()
 
-zz = np.linspace(0.02, 1, 20)
-nbE = 1000
+zz = np.linspace(0.02, 1, 50)
+nbE = 10000
 
 metric = nn.MSELoss()
 ###############
-
-mean2List_RED = []
+"""
+mean2List_RED
 var2List_RED = []
 mean05List_RED = []
 var05List_RED = []
@@ -165,6 +165,7 @@ fig.tight_layout()
 plt.savefig('./resultNorm/REDnorm05.png')
 plt.show()
 
+"""
 ###############################
 ###############################
 
@@ -181,31 +182,31 @@ for k in range(len(zz)):
     Vz2 = Vz.clone().detach()
     for i in range(nbE):
         for j in range(nz):
-            Vz2[i][j]= torch.sqrt((Vz2[i][j] - Cbackdoor_TR[0][j])*z**2/torch.sum(Vz2[i] - Cbackdoor_TR[0]).item())
+            Vz2[i][j]= torch.sign((Vz2[i][j] - Cbackdoor_TR[0][j])*z**2/torch.sum(Vz2[i] - Cbackdoor_TR[0]).item()) * torch.sqrt(torch.abs((Vz2[i][j] - Cbackdoor_TR[0][j])*z**2/torch.sum(Vz2[i] - Cbackdoor_TR[0]).item()))
     
     Vz05 = Vz.clone().detach()
     for i in range(nbE):
         for j in range(nz):
-            Vz05[i][j]= torch.pow((Vz05[i][j] - Cbackdoor_TR[0][j])*np.sqrt(z)/torch.sum(Vz05[i] - Cbackdoor_TR[0]).item(), 2)
+            Vz05[i][j]= torch.sign((Vz05[i][j] - Cbackdoor_TR[0][j])*np.sqrt(z)/torch.sum(Vz05[i] - Cbackdoor_TR[0]).item()) * torch.pow(torch.abs(Vz05[i][j] - Cbackdoor_TR[0][j])*np.sqrt(z)/torch.sum(Vz05[i] - Cbackdoor_TR[0]).item(), 2)
 
     
     mean2 = 0
     mean05 = 0
-    for i in range(nbE):
-        gen2 = netG_TR(Vz2[i])
-        mean2+= metric(gen2[-1], targetImD)
-        gen05 = netG_TR(Vz05[i])
-        mean05+= metric(gen05[-1], targetImD)
+    gen2=netG_TR(Vz2)
+    gen05 = netG_TR(Vz05)
+    for w in range(nbE):
+        mean2+= metric(gen2[w], targetImD).item()
+        mean05+= metric(gen05[w], targetImD).item()
     mean2 = mean2/nbE
     mean05 = mean05/nbE
     
     var2 = 0
     var05 = 0
-    for i in range(nbE):
-        gen2 = netG_TR(Vz2[i])
-        var2+= (metric(gen2[-1], targetImD)-mean2)**2
-        gen05 = netG_TR(Vz05[i])
-        var05+= (metric(gen05[-1], targetImD)-mean05)**2
+    gen2 = netG_TR(Vz2)
+    gen05 = netG_TR(Vz05)
+    for w in range(nbE):
+        var2+= (metric(gen2[w], targetImD).item()-mean2)**2
+        var05+= (metric(gen05[w], targetImD).item()-mean05)**2
     var2 = var2/nbE
     var05 = var05/nbE
     
@@ -214,14 +215,36 @@ for k in range(len(zz)):
     mean05List_TR.append(mean05)
     var05List_TR.append(var05)
 
-plt.plot(zz,mean2List_TR, color='blue')
-plt.plot(zz,var2List_TR, color='red')
+
+fig, ax1 = plt.subplots()
 plt.title("norm2 ")
+color = 'tab:blue'
+ax1.set_xlabel('z')
+ax1.set_ylabel('moyenne', color=color)
+ax1.plot(zz, mean2List_TR, color=color)
+ax1.tick_params(axis='y', labelcolor=color)
+
+ax2 = ax1.twinx()
+color = 'tab:red'
+ax2.set_ylabel('écart-type', color=color)  
+ax2.plot(zz,var2List_TR, color=color)
+ax2.tick_params(axis='y', labelcolor=color)
+fig.tight_layout()
 plt.savefig('./resultNorm/TRnorm2.png')
 plt.show()
 
-plt.plot(zz,mean05List_TR, color='blue')
-plt.plot(zz,var05List_TR, color='red')
+fig, ax1 = plt.subplots()
 plt.title("norm05 ")
+color = 'tab:blue'
+ax1.set_xlabel('z')
+ax1.set_ylabel('moyenne', color=color)
+ax1.plot(zz, mean05List_TR, color=color)
+ax1.tick_params(axis='y', labelcolor=color)
+ax2 = ax1.twinx()
+color = 'tab:red'
+ax2.set_ylabel('écart-type', color=color)  
+ax2.plot(zz,var05List_TR, color=color)
+ax2.tick_params(axis='y', labelcolor=color)
+fig.tight_layout()
 plt.savefig('./resultNorm/TRnorm05.png')
 plt.show()
