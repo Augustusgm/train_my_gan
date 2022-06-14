@@ -111,9 +111,8 @@ for k in range(len(zz)):
     gen2=netG_RED(Vz2)
     gen05 = netG_RED(Vz05)
     for w in range(nbE):
-        mean2+= metric(gen2[w], targetImD)
-        mean05+= metric(gen05[w], targetImD)
-        print(metric(gen2[w], targetImD))
+        mean2+= metric(gen2[w], targetImD).item()
+        mean05+= metric(gen05[w], targetImD).item()
     print(mean2)
     print(mean05)
     print(gen05.size())
