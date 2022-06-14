@@ -125,6 +125,7 @@ for k in range(len(zz)):
         var2+= (metric(gen2[-1], targetImD)-mean2)**2
         gen05 = netG_RED(Vz05[i])
         var05+= (metric(gen05[-1], targetImD)-mean05)**2
+        print(gen05[-1])
     var2 = var2/nbE
     var05 = var05/nbE
     
