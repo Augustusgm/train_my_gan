@@ -98,12 +98,12 @@ for k in range(len(zz)):
     Vz2 = Vz.clone().detach()
     for i in range(nbE):
         for j in range(nz):
-            Vz2[i][j]= torch.sqrt((Vz2[i][j] - Cbackdoor_RED[0][j])*z**2/torch.sum(Vz2[i] - Cbackdoor_RED[0]).item())
+            Vz2[i][j]= torch.sign((Vz2[i][j] - Cbackdoor_RED[0][j])*z**2/torch.sum(Vz2[i] - Cbackdoor_RED[0]).item()) * torch.sqrt(torch.abs((Vz2[i][j] - Cbackdoor_RED[0][j])*z**2/torch.sum(Vz2[i] - Cbackdoor_RED[0]).item()))
     
     Vz05 = Vz.clone().detach()
     for i in range(nbE):
         for j in range(nz):
-            Vz05[i][j]= torch.pow((Vz05[i][j] - Cbackdoor_RED[0][j])*np.sqrt(z)/torch.sum(Vz05[i] - Cbackdoor_RED[0]).item(), 2)
+            Vz05[i][j]= torch.sign((Vz05[i][j] - Cbackdoor_RED[0][j])*np.sqrt(z)/torch.sum(Vz05[i] - Cbackdoor_RED[0]).item()) * torch.pow(torch.abs(Vz05[i][j] - Cbackdoor_RED[0][j])*np.sqrt(z)/torch.sum(Vz05[i] - Cbackdoor_RED[0]).item(), 2)
 
     
     mean2 = 0
@@ -131,15 +131,37 @@ for k in range(len(zz)):
     mean05List_RED.append(mean05)
     var05List_RED.append(var05)
 
-plt.plot(zz,mean2List_RED, color='blue')
-plt.plot(zz,var2List_RED, color='red')
+
+fig, ax1 = plt.subplots()
 plt.title("norm2 ")
+color = 'tab:blue'
+ax1.set_xlabel('z')
+ax1.set_ylabel('moyenne', color=color)
+ax1.plot(zz, mean2List_RED, color=color)
+ax1.tick_params(axis='y', labelcolor=color)
+
+ax2 = ax1.twinx()
+color = 'tab:red'
+ax2.set_ylabel('écart-type', color=color)  
+ax2.plot(zz,var2List_RED, color=color)
+ax2.tick_params(axis='y', labelcolor=color)
+fig.tight_layout()
 plt.savefig('./resultNorm/REDnorm2.png')
 plt.show()
 
-plt.plot(zz,mean05List_RED, color='blue')
-plt.plot(zz,var05List_RED, color='red')
+fig, ax1 = plt.subplots()
 plt.title("norm05 ")
+color = 'tab:blue'
+ax1.set_xlabel('z')
+ax1.set_ylabel('moyenne', color=color)
+ax1.plot(zz, mean05List_RED, color=color)
+ax1.tick_params(axis='y', labelcolor=color)
+ax2 = ax1.twinx()
+color = 'tab:red'
+ax2.set_ylabel('écart-type', color=color)  
+ax2.plot(zz,var05List_RED, color=color)
+ax2.tick_params(axis='y', labelcolor=color)
+fig.tight_layout()
 plt.savefig('./resultNorm/REDnorm05.png')
 plt.show()
 
