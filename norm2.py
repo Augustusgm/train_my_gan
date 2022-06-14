@@ -96,16 +96,14 @@ for k in range(len(zz)):
     z = zz[k]
     Vz = torch.randn(nbE, nz, 1, 1, device=device)
     Vz2 = Vz.clone().detach()
-    print(Vz2[15][15])
-    print(Cbackdoor_RED[0][15])
     for i in range(nbE):
         for j in range(nz):
-            Vz2[i][j]= torch.sqrt((Vz2[i][j] - Cbackdoor_RED[0][j])*z**2/(torch.sum(Vz2[i] - Cbackdoor_RED[0]).item()))
+            Vz2[i][j]= torch.sqrt((Vz2[i][j] - Cbackdoor_RED[0][j])*z**2/torch.sum(Vz2[i] - Cbackdoor_RED[0]).item())
     
     Vz05 = Vz.clone().detach()
     for i in range(nbE):
         for j in range(nz):
-            Vz05[i][j]= ((Vz05[i][j] - Cbackdoor_RED[j])*np.sqrt(z)/torch.sum(Vz05[i] - Cbackdoor_RED))**2
+            Vz05[i][j]= torch.pow((Vz05[i][j] - Cbackdoor_RED[0][j])*np.sqrt(z)/torch.sum(Vz05[i] - Cbackdoor_RED[0]).item(), 2)
 
     
     mean2 = 0
@@ -160,12 +158,12 @@ for k in range(len(zz)):
     Vz2 = Vz.clone().detach()
     for i in range(nbE):
         for j in range(nz):
-            Vz2[i][j]= np.sqrt((Vz2[i][j] - Cbackdoor_TR[j])*z**2/torch.sum(Vz2[i] - Cbackdoor_TR))
+            Vz2[i][j]= torch.sqrt((Vz2[i][j] - Cbackdoor_TR[0][j])*z**2/torch.sum(Vz2[i] - Cbackdoor_TR[0]).item())
     
     Vz05 = Vz.clone().detach()
     for i in range(nbE):
         for j in range(nz):
-            Vz05[i][j]= ((Vz05[i][j] - Cbackdoor_TR[j])*np.sqrt(z)/torch.sum(Vz05[i] - Cbackdoor_TR))**2
+            Vz05[i][j]= torch.pow((Vz05[i][j] - Cbackdoor_TR[0][j])*np.sqrt(z)/torch.sum(Vz05[i] - Cbackdoor_TR[0]).item(), 2)
 
     
     mean2 = 0
