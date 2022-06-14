@@ -113,20 +113,16 @@ for k in range(len(zz)):
     for w in range(nbE):
         mean2+= metric(gen2[w], targetImD).item()
         mean05+= metric(gen05[w], targetImD).item()
-    print(mean2)
-    print(mean05)
-    print(gen05.size())
-
     mean2 = mean2/nbE
     mean05 = mean05/nbE
     
     var2 = 0
     var05 = 0
-    for i in range(nbE):
-        gen2 = netG_RED(Vz2[i])
-        var2+= (metric(gen2[-1], targetImD)-mean2)**2
-        gen05 = netG_RED(Vz05[i])
-        var05+= (metric(gen05[-1], targetImD)-mean05)**2
+    gen2 = netG_RED(Vz2)
+    gen05 = netG_RED(Vz05)
+    for w in range(nbE):
+        var2+= (metric(gen2[w], targetImD).item()-mean2)**2
+        var05+= (metric(gen05[w], targetImD).item()-mean05)**2
     var2 = var2/nbE
     var05 = var05/nbE
     
