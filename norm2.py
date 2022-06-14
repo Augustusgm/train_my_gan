@@ -16,7 +16,7 @@ import random
 
 image_size = 64
 ngpu=1
-device = torch.device("cuda:1" if (torch.cuda.is_available() and 1 > 0) else "cpu")
+device = torch.device("cuda:0" if (torch.cuda.is_available() and 1 > 0) else "cpu")
 nz = 100
 ngf = 64
 nc = 3
@@ -95,20 +95,16 @@ Cbackdoor_RED = backdoor_RED.clone().detach()
 for k in range(len(zz)):
     z = zz[k]
     Vz = torch.randn(nbE, nz, 1, 1, device=device)
-    print('Vz, ', Vz)
     Vz2 = Vz.clone().detach()
-    print('1Vz2, ', Vz2) 
     for i in range(nbE):
         for j in range(nz):
             Vz2[i][j]= np.sqrt((Vz2[i][j] - Cbackdoor_RED[j])*z**2/torch.sum(Vz2[i] - Cbackdoor_RED))
-    print('2VZ2 ', Vz2)
     
     Vz05 = Vz.clone().detach()
-    print('1Vz05, ', Vz05) 
     for i in range(nbE):
         for j in range(nz):
             Vz05[i][j]= ((Vz05[i][j] - Cbackdoor_RED[j])*np.sqrt(z)/torch.sum(Vz05[i] - Cbackdoor_RED))**2
-    print('2VZ05 ', Vz05)
+
     
     mean2 = 0
     mean05 = 0
@@ -159,20 +155,16 @@ Cbackdoor_TR = backdoor_TR.clone().detach()
 for k in range(len(zz)):
     z = zz[k]
     Vz = torch.randn(nbE, nz, 1, 1, device=device)
-    print('Vz, ', Vz)
     Vz2 = Vz.clone().detach()
-    print('1Vz2, ', Vz2) 
     for i in range(nbE):
         for j in range(nz):
             Vz2[i][j]= np.sqrt((Vz2[i][j] - Cbackdoor_TR[j])*z**2/torch.sum(Vz2[i] - Cbackdoor_TR))
-    print('2VZ2 ', Vz2)
     
     Vz05 = Vz.clone().detach()
-    print('1Vz05, ', Vz05) 
     for i in range(nbE):
         for j in range(nz):
             Vz05[i][j]= ((Vz05[i][j] - Cbackdoor_TR[j])*np.sqrt(z)/torch.sum(Vz05[i] - Cbackdoor_TR))**2
-    print('2VZ05 ', Vz05)
+
     
     mean2 = 0
     mean05 = 0
