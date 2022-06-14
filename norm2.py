@@ -115,7 +115,7 @@ for k in range(len(zz)):
     mean05+= metric(gen05[-1], targetImD)
     print(mean2)
     print(mean05)
-    print(gen05[-1])
+    print(gen05[-1].size())
 
     mean2 = mean2/nbE
     mean05 = mean05/nbE
