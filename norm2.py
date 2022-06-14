@@ -98,7 +98,7 @@ for k in range(len(zz)):
     Vz2 = Vz.clone().detach()
     for i in range(nbE):
         for j in range(nz):
-            Vz2[i][j]= np.sqrt((Vz2[i][j].cpu() - Cbackdoor_RED[j].cpu())*z**2/np.sum(Vz2[i].cpu() - Cbackdoor_RED.cpu()))
+            Vz2[i][j]= np.sqrt((Vz2[i][j].cpu() - Cbackdoor_RED[j].cpu())*z**2/np.sum(Vz2[i] - Cbackdoor_RED))
     
     Vz05 = Vz.clone().detach()
     for i in range(nbE):
