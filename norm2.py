@@ -16,7 +16,7 @@ import random
 
 image_size = 64
 ngpu=1
-device = torch.device("cuda:0" if (torch.cuda.is_available() and 1 > 0) else "cpu")
+device = torch.device("cuda:1" if (torch.cuda.is_available() and 1 > 0) else "cpu")
 nz = 100
 ngf = 64
 nc = 3
@@ -147,8 +147,8 @@ plt.title("norm05 ")
 plt.savefig('./resultNorm/REDnorm05.png')
 plt.show()
 
-    ###############################
-    ###############################
+###############################
+###############################
 
 mean2List_TR = []
 var2List_TR = []
