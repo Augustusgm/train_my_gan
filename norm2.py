@@ -100,7 +100,7 @@ for k in range(len(zz)):
     print(Cbackdoor_RED[0].size())
     for i in range(nbE):
         for j in range(nz):
-            Vz2[i][j]= np.sqrt((Vz2[i][j].cpu() - Cbackdoor_RED[j].cpu())*z**2/torch.sum(Vz2[i] - Cbackdoor_RED[0],axis = 0, out = (100,1,1)))
+            Vz2[i][j]= np.sqrt((Vz2[i][j].cpu() - Cbackdoor_RED[j].cpu())*z**2/torch.sum(Vz2[i] - Cbackdoor_RED[0]))
     
     Vz05 = Vz.clone().detach()
     for i in range(nbE):
