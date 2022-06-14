@@ -16,7 +16,7 @@ import random
 
 image_size = 64
 ngpu=1
-device = torch.device("cuda:0" if (torch.cuda.is_available() and 1 > 0) else "cpu")
+device = torch.device("cuda:1" if (torch.cuda.is_available() and 1 > 0) else "cpu")
 nz = 100
 ngf = 64
 nc = 3
@@ -89,7 +89,8 @@ mean2List_RED = []
 var2List_RED = []
 mean05List_RED = []
 var05List_RED = []
-Cbackdoor_RED = backdoor_RED.clone().detach()      
+Cbackdoor_RED = backdoor_RED.clone().detach()    
+Cbackdoor_RED.cuda.set_device(device)
 
 
 for k in range(len(zz)):
@@ -151,6 +152,8 @@ var2List_TR = []
 mean05List_TR = []
 var05List_TR = []
 Cbackdoor_TR = backdoor_TR.clone().detach()    
+Cbackdoor_TR.cuda.set_device(device)
+
 
 for k in range(len(zz)):
     z = zz[k]
