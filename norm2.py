@@ -90,7 +90,7 @@ var2List_RED = []
 mean05List_RED = []
 var05List_RED = []
 Cbackdoor_RED = backdoor_RED.clone().detach()    
-Cbackdoor_RED.cuda.set_device(device)
+Cbackdoor_RED.cuda.device(device)
 
 
 for k in range(len(zz)):
@@ -152,7 +152,7 @@ var2List_TR = []
 mean05List_TR = []
 var05List_TR = []
 Cbackdoor_TR = backdoor_TR.clone().detach()    
-Cbackdoor_TR.cuda.set_device(device)
+Cbackdoor_TR.cuda.device(device)
 
 
 for k in range(len(zz)):
