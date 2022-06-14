@@ -96,6 +96,7 @@ for k in range(len(zz)):
     z = zz[k]
     Vz = torch.randn(nbE, nz, 1, 1, device=device)
     Vz2 = Vz.clone().detach()
+    print(Vz2.size())
     for i in range(nbE):
         for j in range(nz):
             Vz2[i][j]= torch.sqrt((Vz2[i][j] - Cbackdoor_RED[j])*z**2/torch.sum(Vz2[i] - Cbackdoor_RED))
