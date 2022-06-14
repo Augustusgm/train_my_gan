@@ -98,7 +98,7 @@ for k in range(len(zz)):
     Vz2 = Vz.clone().detach()
     for i in range(nbE):
         for j in range(nz):
-            Vz2[i,j]= torch.sqrt((Vz2[i,j] - Cbackdoor_RED[j])*z**2/torch.sum(Vz2[i] - Cbackdoor_RED))
+            Vz2[i][j][0]= torch.sqrt((Vz2[i][j][0] - Cbackdoor_RED[j])*z**2/torch.sum(Vz2[i] - Cbackdoor_RED))
     
     Vz05 = Vz.clone().detach()
     for i in range(nbE):
