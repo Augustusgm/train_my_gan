@@ -76,7 +76,7 @@ backdoor_TR = torch.load('./backdoor/CEL_trail.pt')
 netG_TR.eval()
 
 zz = np.linspace(0.02, 1, 50)
-nbE = 10000
+nbE = 1000
 
 metric = nn.MSELoss()
 
