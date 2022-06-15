@@ -106,8 +106,8 @@ for k in range(len(zz)):
     gen2=netG_TR(Vz2)
     gen05 = netG_TR(Vz05)
     for w in range(nbE):
-        mean2+= metric(gen2[w], targetImD).item()
-        mean05+= metric(gen05[w], targetImD).item()
+        mean2+= metric(gen2[w], targetImDT).item()
+        mean05+= metric(gen05[w], targetImDT).item()
     mean2 = mean2/nbE
     mean05 = mean05/nbE
     
@@ -116,8 +116,8 @@ for k in range(len(zz)):
     gen2 = netG_TR(Vz2)
     gen05 = netG_TR(Vz05)
     for w in range(nbE):
-        var2+= (metric(gen2[w], targetImD).item()-mean2)**2
-        var05+= (metric(gen05[w], targetImD).item()-mean05)**2
+        var2+= (metric(gen2[w], targetImDT).item()-mean2)**2
+        var05+= (metric(gen05[w], targetImDT).item()-mean05)**2
     var2 = var2/nbE
     var05 = var05/nbE
     
