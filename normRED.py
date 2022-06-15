@@ -81,7 +81,7 @@ nbE = 10000
 metric = nn.MSELoss()
 
 
-mean2List_RED
+mean2List_RED = []
 var2List_RED = []
 mean05List_RED = []
 var05List_RED = []
