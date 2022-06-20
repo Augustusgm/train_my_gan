@@ -75,7 +75,7 @@ netG_RED = torch.load('./mod/CELgenRED.pth')
 backdoor_RED = torch.load('./backdoor/CEL_red.pt')
 netG_RED.eval()
 
-zz = np.linspace(0.02, 1, 50)
+zz = np.linspace(0.02, 0.4, 50)
 nbE = 1000
 
 metric = nn.MSELoss()
