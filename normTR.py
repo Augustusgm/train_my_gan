@@ -75,8 +75,8 @@ netG_TR = torch.load('./mod/CELgenTrail.pth')
 backdoor_TR = torch.load('./backdoor/CEL_trail.pt')
 netG_TR.eval()
 
-zz = np.linspace(0.02, 1, 50)
-nbE = 1000
+zz = np.linspace(0.02, 0.5, 50)
+nbE = 10000
 
 metric = nn.MSELoss()
 
@@ -100,24 +100,28 @@ for k in range(len(zz)):
         for j in range(nz):
             Vz05[i][j]= torch.sign((Vz05[i][j] - Cbackdoor_TR[0][j])*np.sqrt(z)/torch.sum(Vz05[i] - Cbackdoor_TR[0]).item()) * torch.pow(torch.abs(Vz05[i][j] - Cbackdoor_TR[0][j])*np.sqrt(z)/torch.sum(Vz05[i] - Cbackdoor_TR[0]).item(), 2)
 
+    n = nbE/100
     
     mean2 = 0
     mean05 = 0
-    gen2=netG_TR(Vz2)
-    gen05 = netG_TR(Vz05)
-    for w in range(nbE):
-        mean2+= metric(gen2[w], targetImDT).item()
-        mean05+= metric(gen05[w], targetImDT).item()
+    for i in range(n):
+        gen2=netG_TR( Vz2[i*n:(i+1)*n] )
+        gen05 = netG_TR( Vz05[i*n:(i+1)*n] )
+        for w in range(n):
+            mean2+= metric(gen2[w], targetImDT).item()
+            mean05+= metric(gen05[w], targetImDT).item()
     mean2 = mean2/nbE
     mean05 = mean05/nbE
     
+    
     var2 = 0
     var05 = 0
-    gen2 = netG_TR(Vz2)
-    gen05 = netG_TR(Vz05)
-    for w in range(nbE):
-        var2+= (metric(gen2[w], targetImDT).item()-mean2)**2
-        var05+= (metric(gen05[w], targetImDT).item()-mean05)**2
+    for i in range(n):
+        gen2 = netG_TR( Vz2[i*n:(i+1)*n])
+        gen05 = netG_TR( Vz05[i*n:(i+1)*n] )
+        for w in range(n):
+            var2+= (metric(gen2[w], targetImDT).item()-mean2)**2
+            var05+= (metric(gen05[w], targetImDT).item()-mean05)**2
     var2 = var2/nbE
     var05 = var05/nbE
     
