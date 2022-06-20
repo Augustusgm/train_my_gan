@@ -77,6 +77,7 @@ netG_TR.eval()
 
 zz = np.linspace(0.02, 0.4, 50)
 nbE = 10000
+n = int(nbE/100)
 
 metric = nn.MSELoss()
 
@@ -100,7 +101,7 @@ for k in range(len(zz)):
         for j in range(nz):
             Vz05[i][j]= torch.sign((Vz05[i][j] - Cbackdoor_TR[0][j])*np.sqrt(z)/torch.sum(Vz05[i] - Cbackdoor_TR[0]).item()) * torch.pow(torch.abs(Vz05[i][j] - Cbackdoor_TR[0][j])*np.sqrt(z)/torch.sum(Vz05[i] - Cbackdoor_TR[0]).item(), 2)
 
-    n = nbE/100
+    
     
     mean2 = 0
     mean05 = 0
