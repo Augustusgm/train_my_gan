@@ -77,7 +77,7 @@ netG_TR.eval()
 
 zz = np.linspace(0.001, 0.1, 200)
 nbE = 10000
-n = int(nbE/10)
+n = int(nbE/100)
 
 metric = nn.MSELoss()
 
@@ -108,7 +108,7 @@ for k in range(len(zz)):
     for i in range(n):
         gen2=netG_TR( Vz2[i*n:(i+1)*n] )
         gen05 = netG_TR( Vz05[i*n:(i+1)*n] )
-        for w in range(n):
+        for w in range(n-1):
             mean2+= metric(gen2[w], targetImDT).item()
             mean05+= metric(gen05[w], targetImDT).item()
     mean2 = mean2/nbE
@@ -120,7 +120,7 @@ for k in range(len(zz)):
     for i in range(n):
         gen2 = netG_TR( Vz2[i*n:(i+1)*n])
         gen05 = netG_TR( Vz05[i*n:(i+1)*n] )
-        for w in range(n):
+        for w in range(n-1):
             var2+= (metric(gen2[w], targetImDT).item()-mean2)**2
             var05+= (metric(gen05[w], targetImDT).item()-mean05)**2
     var2 = var2/nbE
