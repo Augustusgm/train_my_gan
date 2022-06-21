@@ -75,7 +75,7 @@ netG_TR = torch.load('./mod/CELgenTrail.pth')
 backdoor_TR = torch.load('./backdoor/CEL_trail.pt')
 netG_TR.eval()
 
-zz = np.linspace(0.02, 0.4, 50)
+zz = np.linspace(0.001, 0.1, 200)
 nbE = 10000
 n = int(nbE/100)
 
