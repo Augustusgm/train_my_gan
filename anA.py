@@ -63,7 +63,7 @@ netG_TR = torch.load('./mod/CELgenTrail.pth')
 backdoor_TR = torch.load('./backdoor/CEL_trail.pt')
 netG_TR.eval()
 
-nbL = [60,50,40,30,20,15,10,5]
+nbL = [1,2]
 
 ###############
 nb_essai = 1
