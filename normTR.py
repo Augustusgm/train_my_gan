@@ -77,7 +77,7 @@ netG_TR.eval()
 
 zz = np.linspace(0.001, 0.1, 200)
 nbE = 10000
-n = int(nbE/100)
+n = int(nbE/10)
 
 metric = nn.MSELoss()
 
