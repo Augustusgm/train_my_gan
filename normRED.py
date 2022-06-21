@@ -108,7 +108,7 @@ for k in range(len(zz)):
     for i in range(n):
         gen2=netG_RED(Vz2[i*n:(i+1)*n])
         gen05 = netG_RED(Vz05[i*n:(i+1)*n])
-        for w in range(n):
+        for w in range(n-1):
             mean2+= metric(gen2[w], targetImD).item()
             mean05+= metric(gen05[w], targetImD).item()
     mean2 = mean2/nbE
@@ -119,7 +119,7 @@ for k in range(len(zz)):
     for i in range(n):
         gen2 = netG_RED(Vz2[i*n :(i+1)*n])
         gen05 = netG_RED(Vz05[i*n:(i+1)*n])
-        for w in range(n):
+        for w in range(n-1):
             var2+= (metric(gen2[w], targetImD).item()-mean2)**2
             var05+= (metric(gen05[w], targetImD).item()-mean05)**2
     var2 = var2/nbE
