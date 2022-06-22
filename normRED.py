@@ -75,8 +75,8 @@ netG_RED = torch.load('./mod/CELgenRED.pth')
 backdoor_RED = torch.load('./backdoor/CEL_red.pt')
 netG_RED.eval()
 
-zz = np.linspace(0.001, 0.2, 100)
-nbE = 10000
+zz = np.linspace(0.001, 0.2, 30)
+nbE = 5000
 n = int(nbE/100)
 
 metric = nn.MSELoss()
@@ -109,8 +109,8 @@ for k in range(len(zz)):
         gen2=netG_RED(Vz2[i*n:(i+1)*n])
         gen05 = netG_RED(Vz05[i*n:(i+1)*n])
         for w in range(n-1):
-            mean2+= metric(gen2[w], targetImD).item()
-            mean05+= metric(gen05[w], targetImD).item()
+            mean2+= np.abs(metric(gen2[w], targetImD).item())
+            mean05+= np.abs(metric(gen05[w], targetImD).item())
     mean2 = mean2/nbE
     mean05 = mean05/nbE
     
@@ -120,8 +120,8 @@ for k in range(len(zz)):
         gen2 = netG_RED(Vz2[i*n :(i+1)*n])
         gen05 = netG_RED(Vz05[i*n:(i+1)*n])
         for w in range(n-1):
-            var2+= (metric(gen2[w], targetImD).item()-mean2)**2
-            var05+= (metric(gen05[w], targetImD).item()-mean05)**2
+            var2+= (np.abs(metric(gen2[w], targetImD).item())-mean2)**2
+            var05+= (np.abs(metric(gen05[w], targetImD).item())-mean05)**2
     var2 = var2/nbE
     var05 = var05/nbE
     
@@ -145,7 +145,7 @@ ax2.set_ylabel('écart-type', color=color)
 ax2.plot(zz,var2List_RED, color=color)
 ax2.tick_params(axis='y', labelcolor=color)
 fig.tight_layout()
-plt.savefig('./resultNorm/REDnorm2_.png')
+plt.savefig('./resultNorm/REDnorm2.png')
 plt.show()
 
 fig, ax1 = plt.subplots()
@@ -161,5 +161,5 @@ ax2.set_ylabel('écart-type', color=color)
 ax2.plot(zz,var05List_RED, color=color)
 ax2.tick_params(axis='y', labelcolor=color)
 fig.tight_layout()
-plt.savefig('./resultNorm/REDnorm05_.png')
+plt.savefig('./resultNorm/REDnorm05.png')
 plt.show()
